@@ -26,6 +26,10 @@ public class TesterMensajeria {
         try{
             startEntityManagerFactory();
             
+            	/*Por favor, testear lo que programaron usando un método para ello, para 
+            	 que sea más facil de leer y de activar/desactivar */
+            	 
+            
             
             	//sistemaTest();
             
