@@ -17,5 +17,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="E:/U/Cuatri 3-2020/Componentes/LIBRERIAS/mysql-connector-java-8.0.16.jar"/>
+	<classpathentry kind="lib" path="E:/U/Cuatri 3-2020/Componentes/Demos-API-Librerias/JavaMailTest/Dependencias/javax.mail.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
