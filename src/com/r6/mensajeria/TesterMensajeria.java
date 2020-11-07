@@ -4,14 +4,16 @@
  * and open the template in the editor.
  */
 package com.r6.mensajeria;
-
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Optional;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-
 import com.r6.service.SistemaDao;
+import com.r6.funciones.RecordatorioFunc;
 
 /**
  *
@@ -21,14 +23,14 @@ public class TesterMensajeria {
 
     private static EntityManagerFactory entityManagerFactory = null;
     private static EntityManager em = null;
-
+    
     public static void main(String[] args) {
     	
     	
         try{
             startEntityManagerFactory();
             
-            
+            recordatoriosTest();
             
             stopEntityManagerFactory();
         }catch(Exception e){
@@ -41,6 +43,8 @@ public class TesterMensajeria {
     }
     
     public static void sistemaTest() {
+    	//<editor-fold defaultstate="collapsed" desc=" Variables ">
+    	
         SistemaDao sisDao = new SistemaDao();
         sisDao.setEm(em);
         
@@ -94,8 +98,26 @@ public class TesterMensajeria {
         Optional<Sistema> sistDis =sisDao.get(new Integer(1));
         sisDao.EnableDisable(sistDis.get());
         */
+      //<editor-fold>
     }
 
+    
+    
+    public static void recordatoriosTest() {
+    	
+     RecordatorioFunc funcion = new RecordatorioFunc();
+     
+     GregorianCalendar myCal = new GregorianCalendar(2020,Calendar.NOVEMBER,10);
+     Date date = myCal.getTime();
+     System.out.println("Fecha Custom: "+date);
+     
+     funcion.checkDatos(date, 1, 0);
+     
+    }
+    
+    
+    
+    
     public static void startEntityManagerFactory() {
         if (entityManagerFactory == null) {
             try {
