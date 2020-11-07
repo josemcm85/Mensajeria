@@ -23,8 +23,8 @@ public class Envio {
 		properties.put("mail.smtp.host", "smtp.gmail.com");
 		properties.put("mail.smtp.starttls.enable", "true");
 		properties.put("mail.smtp.port", 25);
-		properties.put("mail.smtp.mail.sender", "julsluz1926@gmail.com");
-		properties.put("mail.smtp.user", "julsluz1926@gmail.com");
+		properties.put("mail.smtp.mail.sender", "@gmail");
+		properties.put("mail.smtp.user", "@gmail");
 		properties.put("mail.smtp.auth", "true");
 
 		session = Session.getDefaultInstance(properties);
