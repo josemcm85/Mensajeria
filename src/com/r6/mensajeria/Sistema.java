@@ -1,5 +1,5 @@
 //#region Imports
-package com.propuesta;
+package com.r6.mensajeria;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -18,8 +18,7 @@ public class Sistema implements Serializable {
     //Atributos
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO,
-                    generator="native")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @GenericGenerator(name ="native",strategy = "native")
     @Column(name ="Id_sistema")
     private Integer idSistema;

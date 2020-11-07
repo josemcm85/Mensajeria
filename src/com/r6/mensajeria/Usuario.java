@@ -1,5 +1,5 @@
 //#region Imports
-package com.propuesta;
+package com.r6.mensajeria;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -18,7 +18,7 @@ public class Usuario implements Serializable {
 
     //Atributos
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @GenericGenerator(name = "native", strategy = "native")
     @Column(name = "Id_usuario")
     private Integer idUsuario;
@@ -46,6 +46,12 @@ public class Usuario implements Serializable {
 
     private String contrasenia;
 
+    private Boolean admin;
+    
+    private Boolean superUser;
+    
+    private Boolean activo;
+    
     public Usuario(){};
     
     //<editor-fold defaultstate="collapsed" desc="Getters y Setters">
@@ -118,6 +124,30 @@ public class Usuario implements Serializable {
     public void setContactos(Set<Contacto> contactos) {
         this.contactos = contactos;
     }
+
+	public Boolean getAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(Boolean admin) {
+		this.admin = admin;
+	}
+
+	public Boolean getActivo() {
+		return activo;
+	}
+
+	public void setActivo(Boolean activo) {
+		this.activo = activo;
+	}
+
+	public Boolean getSuperUser() {
+		return superUser;
+	}
+
+	public void setSuperUser(Boolean superUser) {
+		this.superUser = superUser;
+	}
 
     //</editor-fold>
 }

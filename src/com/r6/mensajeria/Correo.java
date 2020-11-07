@@ -1,5 +1,5 @@
 //#region Imports
-package com.propuesta;
+package com.r6.mensajeria;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -22,7 +22,7 @@ import org.hibernate.annotations.GenericGenerator;
 public class Correo implements Serializable {
 
     @Id
-    @GeneratedValue(generator = "native", strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @GenericGenerator(name = "native", strategy = "native")
     @Column(name = "Id_correo")
     private Integer id;

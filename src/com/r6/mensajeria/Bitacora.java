@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.propuesta;
+package com.r6.mensajeria;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -23,7 +23,7 @@ import org.hibernate.annotations.GenericGenerator;
 public class Bitacora {
 
     @Id
-    @GeneratedValue(generator = "native", strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO) 
     @GenericGenerator(name = "native", strategy = "native")
     @Column(name = "Id_bitacora")
     private Integer id;

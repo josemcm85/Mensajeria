@@ -1,5 +1,5 @@
 //#region Imports
-package com.propuesta;
+package com.r6.mensajeria;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -16,7 +16,7 @@ import org.hibernate.annotations.GenericGenerator;
 public class Contacto implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @GenericGenerator(name = "native", strategy = "native")
     @Column(name = "Id_contacto")
     private Integer id;

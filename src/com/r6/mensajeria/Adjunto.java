@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.propuesta;
+package com.r6.mensajeria;
 
 import java.io.InputStream;
 import java.io.Serializable;
@@ -27,7 +27,7 @@ import org.hibernate.annotations.GenericGenerator;
 public class Adjunto implements Serializable {
     
    @Id
-   @GeneratedValue(generator = "native",strategy = GenerationType.AUTO)
+   @GeneratedValue(strategy = GenerationType.AUTO)
    @GenericGenerator(name = "native",strategy = "native")
    @Column(name = "Id_adjunto")
    private Integer id;
