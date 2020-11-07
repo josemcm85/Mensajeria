@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.time.LocalDate;
 import java.time.Month;
@@ -37,11 +38,11 @@ public class RecordatorioFunc {
 	
 		boolean allOk=false;
 		
-		int yearSend = fecha.getYear();
-		int yearActual = today.getYear();
+		int yearSend = getYear(fecha);
+		int yearActual = getYear(today);
 		
 		/*Meses Sumados*/
-		long mesesRestantes = monthsBetween(convertToLocal(today),convertToLocal(fecha));
+		Long mesesRestantes = monthsBetween(convertToLocal(today),convertToLocal(fecha));
 		
 		
 		/*Dias restantes*/
@@ -54,7 +55,18 @@ public class RecordatorioFunc {
 			/* Revisa si los dias restantes dan para la cantidad de veces a repetir*/
 			if(veces <= diasRestantes.intValue()) {
 				
-				
+				/* Revisa si la cantidad de meses es menor o igual a la
+				 * cantidad de meses entre ambas fechas*/
+				if(meses <= mesesRestantes.intValue()) {
+					
+					System.out.println("El correo se enviara el anno "+yearSend+" y es el Anno "+yearActual+"\n"
+				    +"Quedan "+diasRestantes.intValue()+" dias disponibles para enviar "+veces+" Notificaciones"+"\n"
+					+"durante "+meses+" meses");
+					
+					allOk = true;
+					
+					
+				}
 				
 			}
 			
@@ -86,6 +98,13 @@ public class RecordatorioFunc {
 		return restantes;
 	}
 	
+	
+	public int getYear(Date fecha) {
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(fecha);
+		int year = calendar.get(Calendar.YEAR);
+		return year;
+	}
 	
 	/*
 	 * - Generar recordatorios- A partir de la cantidad de veces que el usuario
