@@ -13,6 +13,17 @@ import org.hibernate.annotations.GenericGenerator;
 //One con Usuario
 @Entity
 @Table(name="Tblsistema")
+@NamedQueries(value = {
+		@NamedQuery(
+			name="Sistema.find",
+			query="SELECT s FROM Sistema s WHERE s.idSistema = :idParam"),
+		@NamedQuery(
+			name="Sistema.findAll",
+			query="SELECT s FROM Sistema s ORDER BY s.idSistema")
+	
+})
+
+
 public class Sistema implements Serializable {
 
     //Atributos
