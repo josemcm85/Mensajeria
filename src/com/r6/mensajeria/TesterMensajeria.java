@@ -31,8 +31,8 @@ public class TesterMensajeria {
             	 
             
             
-            	//sistemaTest();
-            
+            	sistemaTest();
+            	
             
             
             stopEntityManagerFactory();
@@ -46,8 +46,8 @@ public class TesterMensajeria {
     }
     
     public static void sistemaTest() {
-        SistemaDao sisDao = new SistemaDao();
-        sisDao.setEm(em);
+        SistemaDao sisDao = new SistemaDao(em);
+
         
         //GUARDAR
         

@@ -11,6 +11,26 @@ public class SistemaDao implements Dao<Sistema> {
 
 	private static EntityManager em = null;
 	
+	
+	public SistemaDao(EntityManager em) {
+		SistemaDao.em=em; 
+		
+		try {
+			 Optional<Sistema> sis =get(new Integer(1));
+		}catch(javax.persistence.NoResultException e) {
+			Sistema sist=new Sistema();
+        	sist.setNombre("SuperSistema");
+        	sist.setActivo(true);
+        	save(sist);
+		}
+	
+	
+		
+		
+		
+	}
+	
+	
 	@Override
 	public Optional<Sistema> get(Integer id) {
 
