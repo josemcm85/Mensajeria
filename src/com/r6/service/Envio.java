@@ -14,7 +14,7 @@ import javax.mail.internet.MimeMultipart;
 public class Envio {
 	private final Properties properties = new Properties();
 
-	private String password = "Julz2619";
+	private String password = "";
 
 	private Session session;
 
