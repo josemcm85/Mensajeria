@@ -1,4 +1,5 @@
 package com.r6.service;
+
 import java.io.IOException;
 import java.util.Properties;
 import javax.mail.Message;
@@ -12,51 +13,52 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 public class Envio {
+
 	private final Properties properties = new Properties();
-
-	private String password = "Julz2619";
-
 	private Session session;
 
-	private void init() {
-
+	public void sendEmail(String emailSender, String Password, String emailReceiver, String Subject, String Body,
+			String[] attachFiles) {
+		// sets smtp server properties
 		properties.put("mail.smtp.host", "smtp.gmail.com");
 		properties.put("mail.smtp.starttls.enable", "true");
 		properties.put("mail.smtp.port", 25);
-		properties.put("mail.smtp.mail.sender", "julsluz1926@gmail.com");
-		properties.put("mail.smtp.user", "julsluz1926@gmail.com");
+		properties.put("mail.smtp.mail.sender", emailSender);
+		properties.put("mail.smtp.user", emailSender);
 		properties.put("mail.smtp.auth", "true");
-
 		session = Session.getDefaultInstance(properties);
-	}
 
-	public void sendEmail() {
-
-		init();
 		try {
-			
+
 			MimeMessage message = new MimeMessage(session);
 			message.setFrom(new InternetAddress((String) properties.get("mail.smtp.mail.sender")));
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress("andy.aguilarmasis@gmail.com"));
-			
-			//text
-			message.setSubject("Subject test");
+			message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailReceiver));
+			message.setSubject(Subject);
+
+			// creates multipart
 			Multipart emailContent = new MimeMultipart();
 			MimeBodyPart textBodyPart = new MimeBodyPart();
-			textBodyPart.setText("multipart text");
-			
-			//Attachment Body Part
-			MimeBodyPart file = new MimeBodyPart();
-			file.attachFile("PATH");
-			
-			//attach all
+			textBodyPart.setText(Body);
 			emailContent.addBodyPart(textBodyPart);
-			emailContent.addBodyPart(file);
+
+			// adds attachment
+			if (attachFiles != null && attachFiles.length > 0) {
+				for (String filePath : attachFiles) {
+					MimeBodyPart attachPart = new MimeBodyPart();
+					try {
+						attachPart.attachFile(filePath);
+					} catch (IOException ex) {
+						ex.printStackTrace();
+					}
+
+					emailContent.addBodyPart(attachPart);
+				}
+			}
 			message.setContent(emailContent);
 			
 			// send message
 			Transport t = session.getTransport("smtp");
-			t.connect((String) properties.get("mail.smtp.user"), password);
+			t.connect((String) properties.get("mail.smtp.user"), Password);
 			t.sendMessage(message, message.getAllRecipients());
 			System.out.println("Si se envio el correo... ");
 			t.close();
@@ -64,16 +66,26 @@ public class Envio {
 			System.out.println("No se envio el correo... ");
 			me.printStackTrace();
 			return;
-		} catch (IOException e) {
-			System.out.println("No se pudo enviar el correo");
-			e.printStackTrace();
 		}
 
 	}
+
 	public static void main(String[] args) {
 		Envio enviar = new Envio();
-		enviar.sendEmail();
 		
+		// attachments
+        String[] attachFiles = new String[2];
+        attachFiles[0] = "file path";
+        attachFiles[1] = "file path";
+        
+		enviar.sendEmail(
+				//sender
+				"email", 
+				"password",
+				//receiver 
+				"email", 
+				"Subject --", 
+				"Body --", 
+				attachFiles);
 	}
-
 }
