@@ -12,7 +12,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 import com.r6.service.SistemaDao;
-
+import com.r6.service.Envio;
 /**
  *
  * @author Nvidi
@@ -22,7 +22,7 @@ public class TesterMensajeria {
     private static EntityManagerFactory entityManagerFactory = null;
     private static EntityManager em = null;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) {	
         try{
             startEntityManagerFactory();
             
@@ -39,9 +39,6 @@ public class TesterMensajeria {
         }catch(Exception e){
             e.printStackTrace();
         }
-
-        
-     
         
     }
     
@@ -58,7 +55,7 @@ public class TesterMensajeria {
         sistema.setNombre("Recursos Humanos");
    
        sisDao.save(sistema);
-        */
+       */
         
         
         //ACTUALIZAR

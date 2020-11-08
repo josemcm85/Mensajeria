@@ -42,6 +42,7 @@ public class Envio {
 			emailContent.addBodyPart(textBodyPart);
 
 			// adds attachment
+			//size limit 50 mb - gmail
 			if (attachFiles != null && attachFiles.length > 0) {
 				for (String filePath : attachFiles) {
 					MimeBodyPart attachPart = new MimeBodyPart();
@@ -64,6 +65,7 @@ public class Envio {
 			t.close();
 		} catch (MessagingException me) {
 			System.out.println("No se envio el correo... ");
+			System.out.println("tamaño de archivo excedido - menor a 50 mb");
 			me.printStackTrace();
 			return;
 		}
@@ -74,16 +76,16 @@ public class Envio {
 		Envio enviar = new Envio();
 		
 		// attachments
-        String[] attachFiles = new String[2];
+        String[] attachFiles = new String[1];
         attachFiles[0] = "file path";
-        attachFiles[1] = "file path";
+       
         
 		enviar.sendEmail(
 				//sender
-				"email", 
-				"password",
+				"", 
+				"",
 				//receiver 
-				"email", 
+				"", 
 				"Subject --", 
 				"Body --", 
 				attachFiles);
