@@ -3,8 +3,10 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 import com.r6.mensajeria.Recordatorio;
+import com.r6.mensajeria.Sistema;
 
 
 
@@ -13,7 +15,17 @@ import com.r6.mensajeria.Recordatorio;
 public class RecordatorioDao implements Dao<Recordatorio> {
 	
 	private static EntityManager em = null;
-
+	
+	
+	public void setEm(EntityManager emNew) {
+		em = emNew;
+	}
+	
+	public EntityManager getEm() {
+		return em;
+	}
+	
+	
 	@Override
 	public Optional<Recordatorio> get(Integer id) {
 		Optional<Recordatorio> rec= Optional.ofNullable(
@@ -23,9 +35,11 @@ public class RecordatorioDao implements Dao<Recordatorio> {
 
 	@Override
 	public List<Recordatorio> getAll() {
+	
 		@SuppressWarnings("unchecked")
-		List<Recordatorio> recordatorios = (List<Recordatorio>) em.createQuery("FROM Empleado").getResultList();
+		List<Recordatorio> recordatorios = (List<Recordatorio>) em.createQuery("FROM Recordatorio").getResultList();
 		return recordatorios;
+		
 	}
 
 	@Override

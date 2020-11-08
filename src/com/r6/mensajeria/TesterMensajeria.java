@@ -8,10 +8,13 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Optional;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+
+import com.r6.service.RecordatorioDao;
 import com.r6.service.SistemaDao;
 import com.r6.funciones.RecordatorioFunc;
 
@@ -88,7 +91,7 @@ public class TesterMensajeria {
         if(sis.isPresent()) {
         	System.out.println("ID:"+sis.get().getId()+ " Nombre:"+sis.get().getNombre());
         }else {
-        	System.out.println("No se encontró el sistema");
+        	System.out.println("No se encontrï¿½ el sistema");
         }
        */ 
         
@@ -106,12 +109,23 @@ public class TesterMensajeria {
     public static void recordatoriosTest() {
     	
      RecordatorioFunc funcion = new RecordatorioFunc();
-     Correo correo  = new Correo();
-     GregorianCalendar myCal = new GregorianCalendar(2021,Calendar.JANUARY,10);
-     Date date = myCal.getTime();
-     System.out.println("Fecha Custom: "+date);
+     RecordatorioDao dao = new RecordatorioDao();
+     dao.setEm(em);
      
-     funcion.tester(correo, date, 2, 3);
+     funcion.setRecorDao(dao);
+     for(Recordatorio c: dao.getAll()) {
+    	 System.out.println("C : "+c.getId());	
+    	 
+     }
+ 	 
+     @SuppressWarnings("unchecked")
+	 List<Correo> correos = (List<Correo>) em.createQuery("FROM Correo").getResultList();
+ 	 Correo dummyCorreo = correos.get(0);
+ 	 System.out.println(" DummyCorreo: "+dummyCorreo.getId()+" Due to: "+dummyCorreo.getFechaEnvio().toString());
+ 	 funcion.testVecesxMes(dummyCorreo, 2, 1);
+     
+      	 
+     
      
     }
     
