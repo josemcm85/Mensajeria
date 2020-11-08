@@ -106,12 +106,12 @@ public class TesterMensajeria {
     public static void recordatoriosTest() {
     	
      RecordatorioFunc funcion = new RecordatorioFunc();
-     
-     GregorianCalendar myCal = new GregorianCalendar(2020,Calendar.NOVEMBER,10);
+     Correo correo  = new Correo();
+     GregorianCalendar myCal = new GregorianCalendar(2021,Calendar.JANUARY,10);
      Date date = myCal.getTime();
      System.out.println("Fecha Custom: "+date);
      
-     funcion.checkDatos(date, 1, 0);
+     funcion.tester(correo, date, 2, 3);
      
     }
     
