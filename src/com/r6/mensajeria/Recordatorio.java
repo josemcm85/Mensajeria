@@ -18,6 +18,12 @@ import org.hibernate.annotations.GenericGenerator;
  */
 @Entity
 @Table(name = "Tblrecordatorio")
+@NamedQueries(value= {
+		@NamedQuery(
+		name="Recordatorio.findByMailId",
+		query="SELECT r FROM Recordatorio r WHERE r.correo = :correoParam")
+})
+
 public class Recordatorio implements Serializable {
 
     @Id

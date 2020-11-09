@@ -86,12 +86,6 @@ public class SistemaDao implements Dao<Sistema> {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
 	public void delete(Sistema t) {
 		// TODO Auto-generated method stub
 		

@@ -4,31 +4,37 @@
  * and open the template in the editor.
  */
 package com.r6.mensajeria;
-
-import com.r6.service.AdjuntoDao;
-import com.r6.service.BitacoraDao;
-import com.r6.service.ContactoDao;
-import com.r6.service.Dao;
+import com.r6.funciones.CorreoFunc;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Scanner;
+import java.util.Set;
 import java.util.Optional;
+
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-
-import com.r6.service.SistemaDao;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Set;
-import com.r6.service.UsuarioDao;
 
+
+import com.r6.service.Dao;
+import com.r6.service.AdjuntoDao;
+import com.r6.service.BitacoraDao;
+import com.r6.service.ContactoDao;
+import com.r6.service.RecordatorioDao;
+import com.r6.service.SistemaDao;
+import com.r6.service.CorreoDao;
+import com.r6.service.UsuarioDao;
+import com.r6.funciones.RecordatorioFunc;
 /**
  *
  * @author Nvidi
@@ -45,11 +51,11 @@ public class TesterMensajeria {
 
      
        
-            sistemaTest();
-            UsuarioTest();
+           // sistemaTest();
+           // UsuarioTest();
             //contactoTest();
           //  bitacoraTest(); 
-            
+            recordatoriosTest();
             stopEntityManagerFactory();
             
         } catch (Exception e) {
@@ -365,6 +371,57 @@ public class TesterMensajeria {
     }
     
 
+    
+    
+    public static void recordatoriosTest() {
+    	
+        CorreoFunc funtion = new CorreoFunc();
+        RecordatorioFunc recFuntion = new RecordatorioFunc();
+        funtion.setEm(em);
+        recFuntion.setEm(em);
+        
+        Date date = new Date();
+        Calendar cal = new GregorianCalendar();
+        cal.setTime(date);
+        cal.add(Calendar.MONTH, 3);
+        cal.add(Calendar.DAY_OF_MONTH, 1);
+        Correo c = new Correo();
+        c.setAsunto(" Prueba con Recordatorios ");
+        c.setCuerpo(" Esta es una prueba con recordatorios ");
+        c.setFechaEnvio(cal.getTime());
+        c.setTipo("HTML");
+        c.setEnviado(Boolean.FALSE);
+        
+        
+        
+        /* Crear y enviar Correo 	*/
+      
+       funtion.crearRecxMes(c, 2);
+       
+       //Devuelve correos con recordatorios
+       
+        funtion.getCorreoswRecordatorios();
+
+        
+        // Editar Correo por ID
+        //funtion.editarCorreo(1, "Correo Edit", "Correo Edit", true, cal.getTime(),"HTML");
+        
+        
+        // Eliminar Correo
+        // funtion.eliminarCorreo(1);
+        
+        
+        /* Editar recordatorio por ID 
+         cal.set(Calendar.DAY_OF_MONTH, Calendar.DAY_OF_MONTH-1);
+         recFuntion.editarRecordatorio(1, true, cal.getTime());
+         */
+        /* Eliminar recordatorio por ID
+         recFuntion.deleteRecordatorio(1);
+         */
+    }
+    
+    
+    
     public static void startEntityManagerFactory() {
         if (entityManagerFactory == null) {
             try {

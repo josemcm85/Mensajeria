@@ -17,11 +17,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
-/**
- *
- * @author Nvidi
- */
-//Many to Many con Correos
+
 @Entity
 @Table(name ="Tbladjunto")
 public class Adjunto implements Serializable {
