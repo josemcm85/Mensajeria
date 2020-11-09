@@ -48,7 +48,7 @@ public class TesterMensajeria {
             sistemaTest();
             UsuarioTest();
             //contactoTest();
-            //bitacoraTest(); 
+          //  bitacoraTest(); 
             
             stopEntityManagerFactory();
             
@@ -59,6 +59,7 @@ public class TesterMensajeria {
     }
 
     public static void bitacoraTest() throws IOException {
+    	
         BitacoraDao dao = new BitacoraDao();
         dao.setEm(em);
 
