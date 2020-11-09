@@ -47,4 +47,13 @@ public class AdjuntoDao implements Dao<Adjunto> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    public static EntityManager getEm() {
+        return em;
+    }
+
+    public static void setEm(EntityManager em) {
+        AdjuntoDao.em = em;
+    }
+    
+    
 }
