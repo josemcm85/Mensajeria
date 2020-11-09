@@ -2,11 +2,14 @@
 package com.r6.mensajeria;
 
 import java.io.Serializable;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.persistence.*;
 
 import org.hibernate.annotations.GenericGenerator;
+
+import com.r6.service.SistemaDao;
 
 //#endregion 
 
@@ -84,6 +87,14 @@ public class Sistema implements Serializable {
         return this.nombre;
     }
 
+    public void actualizarSistema(Integer id) {
+    	SistemaDao sisDao=new SistemaDao(); 
+    	Optional<Sistema> sist=sisDao.get(id);
+    	this.activo=sist.get().getActivo();
+    	this.nombre=sist.get().getNombre();
+    	this.idSistema=id;
+    }
+    	
     public void setNombreSistema(String nombre){
          this.nombre  = nombre;
     }
