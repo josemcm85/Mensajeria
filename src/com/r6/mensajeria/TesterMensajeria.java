@@ -48,7 +48,7 @@ public class TesterMensajeria {
             sistemaTest();
             UsuarioTest();
             //contactoTest();
-            bitacoraTest(); 
+          //  bitacoraTest(); 
             
             stopEntityManagerFactory();
             
@@ -57,8 +57,9 @@ public class TesterMensajeria {
         }
 
     }
-
+/*
     public static void bitacoraTest() throws IOException {
+    	
         BitacoraDao dao = new BitacoraDao();
         dao.setEm(em);
 
@@ -181,7 +182,7 @@ public class TesterMensajeria {
             }
         }
     }
-
+*/
     public static void contactoTest() {
 
         //Inicializacion del DAO
@@ -251,8 +252,8 @@ public class TesterMensajeria {
     }
 
     public static void sistemaTest() {
-       // SistemaDao sisDao = new SistemaDao();
-       //sisDao.setEm(em);
+       SistemaDao sisDao = new SistemaDao(em);
+
 
         //GUARDAR
         /*
