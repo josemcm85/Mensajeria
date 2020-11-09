@@ -27,16 +27,19 @@ public class CorreoDao implements Dao<Correo> {
         return em;
     }
 
+    public Correo getById(int id) {
+        return em.getReference(Correo.class, id);
+    }
+
     @Override
     public Optional<Correo> get(Integer id) {
-        Optional<Correo> correo = Optional.ofNullable(
-                (Correo) em.createNamedQuery("Correo.find").setParameter("idParam", id).getSingleResult());
-        return correo;
+
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public List<Correo> getAll() {
-       @SuppressWarnings("unchecked")
+        @SuppressWarnings("unchecked")
         List<Correo> correos = (List<Correo>) em.createQuery("FROM Correo").getResultList();
         return correos;
 
@@ -44,20 +47,24 @@ public class CorreoDao implements Dao<Correo> {
 
     @Override
     public void save(Correo t) {
-       em.getTransaction().begin();
-       em.persist(t);
-       em.getTransaction().commit();
+        em.getTransaction().begin();
+        em.persist(t);
+        em.getTransaction().commit();
 
     }
 
     @Override
     public void update(Correo t) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        em.getTransaction().begin();
+        em.merge(t);
+        em.getTransaction().commit();
     }
 
     @Override
     public void delete(Correo t) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       em.getTransaction().begin();
+        em.remove(t);
+        em.getTransaction().commit();
     }
 
 }

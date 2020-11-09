@@ -1,5 +1,6 @@
 package com.r6.service;
 
+import com.r6.mensajeria.Correo;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,11 +22,14 @@ public class RecordatorioDao implements Dao<Recordatorio> {
         return em;
     }
 
+    
+    public Recordatorio getById(int id) {
+        return em.getReference(Recordatorio.class, id);
+    }
+    
     @Override
     public Optional<Recordatorio> get(Integer id) {
-        Optional<Recordatorio> rec = Optional.ofNullable(
-                (Recordatorio) em.createNamedQuery("Recordatorio.find").setParameter("idParam", id).getSingleResult());
-        return rec;
+       throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -47,13 +51,18 @@ public class RecordatorioDao implements Dao<Recordatorio> {
 
     @Override
     public void update(Recordatorio t) {
-        // TODO Auto-generated method stub
+       em.getTransaction().begin();
+	em.merge(t);
+	em.getTransaction().commit();
 
     }
 
     @Override
     public void delete(Recordatorio t) {
-        // TODO Auto-generated method stub
+        em.getTransaction().begin();
+	em.remove(t);
+	em.getTransaction().commit();
+
 
     }
 

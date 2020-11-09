@@ -19,6 +19,7 @@ import org.hibernate.annotations.GenericGenerator;
 //Many to Many con Adjunto
 @Entity
 @Table(name = "Tblcorreo")
+
 public class Correo implements Serializable {
 
     @Id

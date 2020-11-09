@@ -14,20 +14,37 @@ import java.time.temporal.ChronoUnit;
 
 import com.r6.mensajeria.Correo;
 import com.r6.mensajeria.Recordatorio;
+import com.r6.service.CorreoDao;
 import com.r6.service.RecordatorioDao;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.IntStream;
+import javax.persistence.EntityManager;
 
 public class RecordatorioFunc {
 
     Date today = new Date();
     Calendar calendar = Calendar.getInstance();
     RecordatorioDao dao = new RecordatorioDao();
-    
+    CorreoDao daoCorreo = new CorreoDao();
+     private static EntityManager em = null;
+     
     public void setRecorDao(RecordatorioDao dao) {
         this.dao = dao;
     }
+    
+     public void setEm(EntityManager emNew) {
+        em = emNew;
+        daoCorreo.setEm(emNew);
+        dao.setEm(emNew);
+    }
+
+    public EntityManager getEm() {
+        return em;
+    }
+    
+    
+    
 
     /*                     !-- Seccion veces/meses-- !                    */
  /* Funcion cuando el usuario define la veces en que quiere una notificacion 
@@ -300,13 +317,11 @@ public class RecordatorioFunc {
         return allOk;
     }
 
-   
-
     public void testerMesesXFrecuencia(Correo correo, int veces, int meses, int frecuencia) {
 
         boolean chk = this.checkDatosMesesXFrecuencia(correo, veces, meses, frecuencia);
         List<Date> fechas = new ArrayList<>();
-        List<Date> borrador=new ArrayList<>();
+        List<Date> borrador = new ArrayList<>();
         Calendar cal = new GregorianCalendar();
         cal.setTime(correo.getFechaEnvio());
 
@@ -315,38 +330,31 @@ public class RecordatorioFunc {
                 Date fecha = this.genFechasxMes(cal);
                 fechas.add(fecha);
             }
-            
-            for(Date lista: fechas){
-            System.out.println("gen Fecha: "+lista.toGMTString());
+
+            for (Date lista : fechas) {
+                System.out.println("gen Fecha: " + lista.toGMTString());
             }
-            
-            
+
             for (Date fechaIN : fechas) {
-                
-                 Calendar dummyCal = new GregorianCalendar();
-                 dummyCal.setTime(fechaIN);
-                 dummyCal.set(Calendar.DAY_OF_MONTH, 1);
-                 borrador.add(dummyCal.getTime());
-                 
+
+                Calendar dummyCal = new GregorianCalendar();
+                dummyCal.setTime(fechaIN);
+                dummyCal.set(Calendar.DAY_OF_MONTH, 1);
+                borrador.add(dummyCal.getTime());
+
                 for (int vez = 1; vez < veces; vez++) {
                     dummyCal.add(Calendar.DAY_OF_MONTH, frecuencia);
                     borrador.add(dummyCal.getTime());
                 }
             }
-            
-            
-            
-            
 
-        List<Recordatorio> recordatorios = this.asignarCuerpo(borrador, correo);
-        for (Recordatorio rec : recordatorios) {
-            System.out.println("Rec: " + rec.getId());
-            System.out.println("Fecha: " + rec.getFechaEnvio());
+            List<Recordatorio> recordatorios = this.asignarCuerpo(borrador, correo);
+            for (Recordatorio rec : recordatorios) {
+                System.out.println("Rec: " + rec.getId());
+                System.out.println("Fecha: " + rec.getFechaEnvio());
+            }
+
         }
-            
-        }
-        
-       
 
     }
 
@@ -454,5 +462,31 @@ public class RecordatorioFunc {
         }
 
         return recordatorios;
+    }
+
+    public void editarRecordatorio(int target, boolean estado, Date fechaEnvio) {
+        try {
+            Recordatorio rec = dao.getById(target);
+            Correo correo = daoCorreo.getById(rec.getCorreo().getId());
+            Date now = new Date();
+
+            if (fechaEnvio.compareTo(now) > 0 && correo.getFechaEnvio().compareTo(fechaEnvio) > 0 ) {
+                rec.setEstado(estado);
+                rec.setFechaEnvio(fechaEnvio);
+                dao.update(rec);
+            }else{
+                System.out.println("Error: Fecha no valdia! \n");
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error en editar recordatorio. " + e);
+        }
+
+    }
+    
+    
+    
+    public void deleteRecordatorio(int target){
+        dao.delete(dao.getById(target));
     }
 }
