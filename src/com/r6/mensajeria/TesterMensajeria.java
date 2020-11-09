@@ -48,7 +48,7 @@ public class TesterMensajeria {
             sistemaTest();
             UsuarioTest();
             //contactoTest();
-            bitacoraTest(); 
+            //bitacoraTest(); 
             
             stopEntityManagerFactory();
             
@@ -251,8 +251,8 @@ public class TesterMensajeria {
     }
 
     public static void sistemaTest() {
-       // SistemaDao sisDao = new SistemaDao();
-       //sisDao.setEm(em);
+        SistemaDao sisDao = new SistemaDao(em);
+        
 
         //GUARDAR
         /*
