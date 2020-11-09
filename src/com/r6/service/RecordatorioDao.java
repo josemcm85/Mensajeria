@@ -27,6 +27,12 @@ public class RecordatorioDao implements Dao<Recordatorio> {
         return em.getReference(Recordatorio.class, id);
     }
     
+    public List<Recordatorio> getByMail(Correo correo){
+    	TypedQuery<Recordatorio> recList =em.createNamedQuery("Recordatorio.findByMailId",Recordatorio.class).setParameter("correoParam",correo);
+    	
+    	return recList.getResultList();
+    }
+    
     @Override
     public Optional<Recordatorio> get(Integer id) {
        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

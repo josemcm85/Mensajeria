@@ -89,14 +89,28 @@ public class CorreoFunc {
         try {
             List<Correo> allCorreos = daoCorreo.getAll();
 
+            RecordatorioDao recDao=new RecordatorioDao();
+            recDao.setEm(em);
+            
             for (Correo correo : allCorreos) {
                 System.out.println("Correo ID: " + correo.getId());
                 System.out.println("Asunto: " + correo.getAsunto());
                 System.out.println("    --  Recordatorios  --  ");
-                if (correo.getRecordatorios().size() == 0) {
+                
+                
+              
+          
+                List<Recordatorio> recList=recDao.getByMail(correo);
+                
+                //Hacer método get recordatorios por idcorreo
+                
+               
+                if (recList.size() == 0) {
                     System.out.println(" ! No hay Recordatorios ! \n");
                 }
-                for (Recordatorio rec : correo.getRecordatorios()) {
+                
+              
+                for (Recordatorio rec : recList) {
                     System.out.println("Recordatorio No: " + rec.getId());
                     System.out.println("Fecha recordatorio: " + rec.getFechaEnvio().toGMTString());
                 }
