@@ -20,10 +20,22 @@ import org.hibernate.annotations.GenericGenerator;
 //many to many con Adjunto
 @Entity
 @Table(name = "Tblbitacora")
+@NamedQueries(value = {
+    @NamedQuery(name = "Bitacora.findByPk", query = "Select t from Bitacora t where t.id = :idParam Order by t.fechaEnvio ASC")
+    ,
+        @NamedQuery(name = "Bitacora.findAll", query = "Select t from Bitacora t Order by t.fechaEnvio ASC")
+    ,
+        @NamedQuery(name = "Bitacora.findByUser", query = "Select t from Bitacora t where t.de LIKE :emailParam order by T.fechaEnvio ASC")
+    ,
+        @NamedQuery(name = "Bitacora.findByFile", 
+                query = "Select bit from Bitacora bit INNER JOIN BIT.adjuntosBitacora AS adb  where adb.id = :idParam")
+    ,
+        @NamedQuery(name = "Bitacora.findByDateRange", query = "Select t from Bitacora t where t.fechaEnvio BETWEEN :fIniParam AND :fFinParam order by T.fechaEnvio ASC")
+})
 public class Bitacora {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) 
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @GenericGenerator(name = "native", strategy = "native")
     @Column(name = "Id_bitacora")
     private Integer id;
@@ -35,25 +47,28 @@ public class Bitacora {
             inverseJoinColumns = {
                 @JoinColumn(name = "Id_adjunto", referencedColumnName = "Id_adjunto")})
     private Set<Adjunto> adjuntosBitacora;
-    
+
     private String para;
-    
+
     private String de;
-    
+
     private String copiados;
-    
+
     private String Asunto;
-    
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaEnvio;
-    
+
     private String tipo;
-    
+
     private String cuerpo;
-    
+
     private Boolean enviado;
-    
-    public Bitacora(){};
+
+    public Bitacora() {
+    }
+
+    ;
     
     public Integer getId() {
         return id;
@@ -135,6 +150,4 @@ public class Bitacora {
         this.enviado = enviado;
     }
 
-    
-    
 }
