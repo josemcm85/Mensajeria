@@ -57,7 +57,7 @@ public class TesterMensajeria {
         }
 
     }
-/*
+
     public static void bitacoraTest() throws IOException {
     	
         BitacoraDao dao = new BitacoraDao();
@@ -182,7 +182,7 @@ public class TesterMensajeria {
             }
         }
     }
-*/
+
     public static void contactoTest() {
 
         //Inicializacion del DAO
@@ -252,8 +252,8 @@ public class TesterMensajeria {
     }
 
     public static void sistemaTest() {
-       SistemaDao sisDao = new SistemaDao(em);
-
+        SistemaDao sisDao = new SistemaDao(em);
+        
 
         //GUARDAR
         /*
