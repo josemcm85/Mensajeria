@@ -8,11 +8,27 @@ import javax.persistence.*;
 
 import org.hibernate.annotations.GenericGenerator;
 
-//#endregion 
 //Many to One con Usuario
 //Many to Many con Correo(Para destinatarios)
 @Entity
 @Table(name = "Tblcontacto")
+@NamedQueries(value = {
+    @NamedQuery(
+            name = "Contacto.findPk",
+            query = "Select t from Contacto t Where t.id = :idParam AND t.usuario.idUsuario = :idUserParam")
+    ,
+        @NamedQuery(
+            name = "Contacto.findAll",
+            query = "Select DISTINCT t from Contacto t where t.usuario.idUsuario = :idUserParam ")
+    ,
+        @NamedQuery(
+            name = "Contacto.findSubs",
+            query = "Select  t from Contacto t where t.usuario.idUsuario = :idUserParam and t.suscriptor = TRUE  "
+    )
+    ,
+        @NamedQuery(name = "Contacto.maxId",
+            query = "Select COALESCE(Max(t.id),0) from Contacto t ")
+})
 public class Contacto implements Serializable {
 
     @Id
