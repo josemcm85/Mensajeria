@@ -24,7 +24,7 @@ public class RecordatorioFunc {
     Date today = new Date();
     Calendar calendar = Calendar.getInstance();
     RecordatorioDao dao = new RecordatorioDao();
-
+    
     public void setRecorDao(RecordatorioDao dao) {
         this.dao = dao;
     }

@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package com.r6.mensajeria;
+import com.r6.funciones.CorreoFunc;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -17,6 +18,7 @@ import javax.persistence.Persistence;
 import com.r6.service.RecordatorioDao;
 import com.r6.service.SistemaDao;
 import com.r6.funciones.RecordatorioFunc;
+import com.r6.service.CorreoDao;
 
 /**
  *
@@ -108,35 +110,23 @@ public class TesterMensajeria {
     
     public static void recordatoriosTest() {
     	
-     RecordatorioFunc funcion = new RecordatorioFunc();
-     RecordatorioDao dao = new RecordatorioDao();
-     dao.setEm(em);
-     
-     funcion.setRecorDao(dao);
-     for(Recordatorio c: dao.getAll()) {
-    	 System.out.println("C : "+c.getId());	
-    	 
-     }
- 	 /* vecesXMeses
-         @SuppressWarnings("unchecked")
-	 List<Correo> correos = (List<Correo>) em.createQuery("FROM Correo").getResultList();
- 	 Correo dummyCorreo = correos.get(0);
- 	 System.out.println(" DummyCorreo: "+dummyCorreo.getId()+" Due to: "+dummyCorreo.getFechaEnvio().toString());
- 	 funcion.testVecesxMes(dummyCorreo, 18, 1);
-         */
-      	
-         /* xMeses
-      @SuppressWarnings("unchecked")
-      List<Correo> correos = (List<Correo>) em.createQuery("FROM Correo").getResultList();
-      Correo dummyCorreo = correos.get(0);
-      System.out.println(" DummyCorreo: "+dummyCorreo.getId()+" Due to: "+dummyCorreo.getFechaEnvio().toString());
-      funcion.testMeses(dummyCorreo, 7);
-       */
-         
-      List<Correo> correos = (List<Correo>) em.createQuery("FROM Correo").getResultList();
-      Correo dummyCorreo = correos.get(0);
-      System.out.println(" DummyCorreo: "+dummyCorreo.getId()+" Due to: "+dummyCorreo.getFechaEnvio().toString());
-      funcion.testerMesesXFrecuencia(dummyCorreo, 4, 1,4 );
+        CorreoFunc funtion = new CorreoFunc();
+        funtion.setEm(em);
+        Date date = new Date();
+        Calendar cal = new GregorianCalendar();
+        cal.setTime(date);
+        cal.add(Calendar.MONTH, 3);
+        cal.add(Calendar.DAY_OF_MONTH, 1);
+        Correo c = new Correo();
+        c.setAsunto(" Prueba con Recordatorios ");
+        c.setCuerpo(" Esta es una prueba con recordatorios ");
+        c.setFechaEnvio(cal.getTime());
+        c.setTipo("HTML");
+        c.setEnviado(Boolean.FALSE);
+        
+        funtion.crearRecxMes(c, 2);
+        
+ 	
     }
     
     
