@@ -8,12 +8,27 @@ import javax.persistence.*;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.r6.service.SistemaDao;
+import com.r6.service.UsuarioDao;
+
+
 //#endregion 
 //Many to One con Sistema
 //One to many con contactos
 //Many to Many con Correos(Para remitente)
 @Entity
 @Table(name = "Tblusuario")
+@NamedQueries(value = {
+		@NamedQuery(
+			name="Usuario.find",
+			query="SELECT u FROM Usuario u WHERE u.idUsuario = :idParam"),
+		@NamedQuery(
+			name="Usuario.findAll",
+			query="SELECT u FROM Usuario u ORDER BY u.idUsuario")
+	
+})
+
+
 public class Usuario implements Serializable {
 
     //Atributos
@@ -54,7 +69,31 @@ public class Usuario implements Serializable {
     
     public Usuario(){};
     
-    //<editor-fold defaultstate="collapsed" desc="Getters y Setters">
+    
+    
+    public Usuario(Integer idSistema, String correo, String contrasenia, Boolean admin, Boolean superUser, Boolean activo) {
+		super();
+
+		SistemaDao sisDao = new SistemaDao();
+		
+		for(Sistema s: sisDao.getAll()) {
+        	if (s.getId() == idSistema) {
+        		this.sistema = s;
+        	}
+			
+        }
+
+
+		this.correo = correo;
+		this.contrasenia = contrasenia;
+		this.admin = admin;
+		this.superUser = superUser;
+		this.activo = activo;
+	}
+
+
+
+	//<editor-fold defaultstate="collapsed" desc="Getters y Setters">
 
     public Set<Correo> getCorreos() {
         return correos;
@@ -149,5 +188,38 @@ public class Usuario implements Serializable {
 		this.superUser = superUser;
 	}
 
+	public void actualizarUsuario(Integer idUsuario){
+		UsuarioDao usDao = new UsuarioDao();
+		this.idUsuario = idUsuario;
+		
+		for(Usuario us: usDao.getAll()) {
+			if(us.getIdUsuario()==this.idUsuario) {
+		
+				//Orden para crear usuario (Integer idSistema, String correo, String contrasenia, Boolean admin, Boolean superUser, Boolean activo)
+				this.correo = us.getCorreo();
+				this.contrasenia = us.getContrasenia();
+				this.admin = us.getAdmin();
+				this.superUser = us.getSuperUser();
+				this.activo = us.getActivo();
+				this.sistema = us.getSistema();
+				
+			}
+		}
+		
+	}
+	
+	public void nuevoSistemaUsuario(Integer idSistema) {
+		
+		SistemaDao sisDao = new SistemaDao();
+		
+		for(Sistema s: sisDao.getAll()) {
+        	if (s.getId() == idSistema) {
+        		this.sistema = s;
+        	}
+			
+        }
+		
+	}
+	
     //</editor-fold>
 }
