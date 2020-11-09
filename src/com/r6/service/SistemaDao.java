@@ -30,6 +30,7 @@ public class SistemaDao implements Dao<Sistema> {
 		
 	}
 	
+	public SistemaDao() {}
 	
 	@Override
 	public Optional<Sistema> get(Integer id) {

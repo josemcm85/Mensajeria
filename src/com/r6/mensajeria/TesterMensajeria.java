@@ -12,6 +12,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 import com.r6.service.SistemaDao;
+import com.r6.service.UsuarioDao;
 
 /**
  *
@@ -31,8 +32,8 @@ public class TesterMensajeria {
             	 
             
             
-            	sistemaTest();
-            	
+            sistemaTest();
+            UsuarioTest();
             
             
             stopEntityManagerFactory();
@@ -58,8 +59,8 @@ public class TesterMensajeria {
         sistema.setNombre("Recursos Humanos");
    
        sisDao.save(sistema);
-        */
         
+        */
         
         //ACTUALIZAR
         
@@ -100,6 +101,77 @@ public class TesterMensajeria {
         sisDao.EnableDisable(sistDis.get());
         */
     }
+    
+    public static void UsuarioTest() {
+    	
+    	UsuarioDao usDao = new UsuarioDao(em);
+
+    	
+        //GUARDAR
+    	//Orden para crear usuario (Integer idSistema, String correo, String contrasenia, Boolean admin, Boolean superUser, Boolean activo)
+    
+    	/*
+        Usuario usuario = new Usuario(1,"test@mail.com","abc",false,false,false);
+ 
+       usDao.save(usuario);
+
+    	 */      
+        
+        //ACTUALIZAR
+        
+        /*
+        Usuario us2 =new Usuario();
+        us2.actualizarUsuario(2);
+        us2.setCorreo("testeando@mail.com");
+        us2.setContrasenia("123");
+        usDao.update(us2);
+        */
+        
+        //Asignar a usuario nuevo sistema
+            
+        /*
+         Usuario us3 =new Usuario();
+         us3.actualizarUsuario(2);
+         us3.nuevoSistemaUsuario(2);
+         usDao.update(us3);
+          
+         */
+        
+        
+        //BUSCAR TODOS
+
+    	/*
+
+        for(Usuario u: usDao.getAll()) {
+        	System.out.println("ID:"+u.getIdUsuario()+" Correo: "+u.getCorreo());
+        }
+
+        */
+        
+        
+        //BUSCAR
+        
+        /*
+         
+        Optional<Usuario> us =usDao.get(new Integer(1));
+        if(us.isPresent()) {
+        	System.out.println("ID: "+us.get().getIdUsuario()+ " Correo: "+us.get().getCorreo());
+        }else {
+        	System.out.println("No se encontró el Usuario");
+        }
+        
+        */
+        //DESACTIVAR/ACTIVAR
+        
+        /*
+        Optional<Usuario> us = usDao.get(new Integer(2));
+        usDao.EnableDisable(us.get());
+        */
+    	
+    	
+    	
+    }
+    
 
     public static void startEntityManagerFactory() {
         if (entityManagerFactory == null) {

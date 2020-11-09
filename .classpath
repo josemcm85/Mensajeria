@@ -3,6 +3,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
 		<attributes>
+			<attribute name="module" value="true"/>
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
@@ -16,7 +17,16 @@
 			<attribute name="owner.project.facets" value="jpt.jpa"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="E:/U/Cuatri 3-2020/Componentes/LIBRERIAS/mysql-connector-java-8.0.16.jar"/>
-	<classpathentry kind="lib" path="E:/U/Cuatri 3-2020/Componentes/Demos-API-Librerias/JavaMailTest/Dependencias/javax.mail.jar"/>
+	<classpathentry kind="lib" path="D:/Java/Correos/javax.mail.jar"/>
+	<classpathentry kind="lib" path="D:/Universidad/Componentes/hibernate_libs/antlr-2.7.6.jar"/>
+	<classpathentry kind="lib" path="D:/Universidad/Componentes/hibernate_libs/cglib-2.2.jar"/>
+	<classpathentry kind="lib" path="D:/Universidad/Componentes/hibernate_libs/commons-collections-3.1.jar"/>
+	<classpathentry kind="lib" path="D:/Universidad/Componentes/hibernate_libs/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="D:/Universidad/Componentes/hibernate_libs/hibernate3.jar"/>
+	<classpathentry kind="lib" path="D:/Universidad/Componentes/hibernate_libs/hibernate-jpa-2.0-api-1.0.0.Final.jar"/>
+	<classpathentry kind="lib" path="D:/Universidad/Componentes/hibernate_libs/javassist-3.12.0.GA.jar"/>
+	<classpathentry kind="lib" path="D:/Universidad/Componentes/hibernate_libs/jta-1.1.jar"/>
+	<classpathentry kind="lib" path="D:/Universidad/Componentes/hibernate_libs/slf4j-api-1.6.1.jar"/>
+	<classpathentry kind="lib" path="D:/Universidad/Componentes/hibernate_libs/mysql-connector-java-8.0.16.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
