@@ -15,6 +15,9 @@ import java.time.temporal.ChronoUnit;
 import com.r6.mensajeria.Correo;
 import com.r6.mensajeria.Recordatorio;
 import com.r6.service.RecordatorioDao;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.stream.IntStream;
 
 public class RecordatorioFunc {
 
@@ -65,7 +68,7 @@ public class RecordatorioFunc {
         System.out.println(" ! Meses entre dia actual y la fecha meta " + mesesRestantes);
 
         /* Si el anno meta es mayor o igual que el anno actual*/
-        /* Si la cantidad de veces propuestas es mayor a cero y si la cantidad de meses es mayor a 0*/
+ /* Si la cantidad de veces propuestas es mayor a cero y si la cantidad de meses es mayor a 0*/
         if (yearActual <= yearSend && veces > 0 && meses > 0) {
 
             /* Si la cantidad de meses es valida*/
@@ -105,87 +108,249 @@ public class RecordatorioFunc {
 
     }
 
-
-    
-   /*
+    /*
 	 *           - randomDatePicker- 
 	 * A partir de un parametro tipo calendario, se genera una
          * fecha random para setearla a un recordatorio. 
      */
-   
     public Date randomDatePicker(Calendar cal) {
+        /*Cambiar de void a Date*/
+        int maxDays = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+        int ranDay = 0;
+        boolean allOk = false;
+        Date fecha;
+        do {
+            ranDay = (int) (Math.random() * (maxDays - 1 + 1) + 1);
+            cal.set(Calendar.DAY_OF_MONTH, ranDay);
+            fecha = cal.getTime();
 
-       Date fecha;
-       /* Dias Maximos en X mes*/
-       int maxDays = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-       /* Dia random generado*/
-       int ranDay = (int)(Math.random() * (maxDays - 1 + 1) + 1);
-       /* Se settea el dia random ne le mismo mes*/
-       cal.set(Calendar.DAY_OF_MONTH, ranDay);
-       fecha =cal.getTime();
-       
-       /*   SI hay errores revisar aca */
-       boolean chk = false;
-       
-       Date dummyDate =  calendarToDate(cal);
-       
-       do{
-           /* Revisa si las fechas son iguales al dia de hoy o si la fehca generada esta tarde
-           * a la fecha de hoy*/  
-           if(compareDates(dummyDate ,today) && isLate(today,dummyDate)){
-                ranDay = (int)(Math.random() * (maxDays - 1 + 1) + 1);
-           }else{
-               chk =true;
-           }
-       }while(!chk);
-       
-       
-       return fecha;
+            if (fecha.compareTo(today) == 0 || fecha.compareTo(today) < 0) {
+                ranDay = (int) (Math.random() * (maxDays - 1 + 1) + 1);
+                allOk = false;
+            } else {
+                allOk = true;
+            }
+        } while (!allOk);
+
+        return fecha;
     }
-    
-     /*
+
+
+    /*
 	 *           - dayListGen- 
 	 * A partir de un parametro tipo calendario y los datos ingresados
          * por el usuario, se generan la lista de dias a settear.
      */
-   
-    public List<Date> dayListGen(Calendar calendar, int veces, int meses){
+    public List<Date> dayListGen(Calendar calendar, int veces, int meses) {
         List<Date> dias = new ArrayList<>();
-         /* Por cada mes se generan X veces de fechas random*/
-         for(int mes=0; mes < meses; mes++ ){
-                
-                for(int vez=0; vez < veces; vez++){
-                    dias.add(randomDatePicker(calendar));
-                }
-                
-                /* Se suma al calendario un mes cada vez que se repita el loop.*/
-                calendar.set(Calendar.MONTH, calendar.getTime().getMonth() + mes);
+        /* Por cada mes se generan X veces de fechas random*/
+        for (int mes = 0; mes < meses; mes++) {
+
+            for (int vez = 0; vez < veces; vez++) {
+
+                Date randay = randomDatePicker(calendar);
+                boolean notRepeated = false;
+
+                do {
+                    if (Arrays.asList(dias).contains(randay)) {
+                        randay = randomDatePicker(calendar);
+                    } else {
+                        dias.add(randay);
+                        notRepeated = true;
+                    }
+                } while (!notRepeated);
+
+                /* Funcional
+                dias.add(randomDatePicker(calendar));
+                 */
             }
-         
-         return dias;
+
+            /* Se suma al calendario un mes cada vez que se repita el loop.*/
+            calendar.set(Calendar.MONTH, calendar.getTime().getMonth() + mes);
+        }
+
+        return dias;
     }
-    
+
+    /*     -- cleanList--   
+    Este metodo recibe una lista de fechas y la purga de fechas repetidas*/
+    public List<Date> cleanList(List<Date> original) {
+
+        List<Date> newList = new ArrayList<>();
+
+        for (int i = 0; i <= original.size() - 1; i++) {
+
+            for (int y = 0; y <= original.size() - 1; y++) {
+
+                if (i != y && original.get(i).compareTo(original.get(y)) == 0) {
+                    Date traget = original.get(i);
+                    Calendar cal = this.dateToCalendar(traget);
+                    original.set(y, randomDatePicker(cal));
+                }
+            }
+        }
+        Collections.sort(original);
+        return original;
+    }
+
     public void testVecesxMes(Correo correo, int veces, int meses) {
 
         boolean allOk = this.checkDatosVecesxMeses(correo, veces, meses);
         List<Date> fechas = new ArrayList<>();
-        
+
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(today);
-        
+
         /* Si todos los parametro cumplen se realiza la funcion*/
         if (allOk) {
-            
-            fechas = dayListGen(calendar,veces,meses);
-            
+
+            fechas = dayListGen(calendar, veces, meses);
+            cleanList(fechas);
+
         }
-        
-        for(Date fecha: fechas){
-            System.out.println(" Fecha: "+ fecha.toLocaleString());
+
+        List<Recordatorio> recordatorios = this.asignarCuerpo(fechas, correo);
+        for (Recordatorio rec : recordatorios) {
+            System.out.println("Recordatorio: " + rec.getId() + "\n"
+                    + "Fecha de Envio: " + rec.getFechaEnvio() + "\n");
         }
+
     }
 
     /*                                -- Fin Seccion veces/Meses--                                  */
+ /*                              -- Seccion Mes --                                              */
+ /*   Cuando el usuario decide solo notificar en X cantidad de meses antes                      */
+    public boolean checkDatosxMeses(Correo correo, int meses) {
+        boolean allOk = false;
+        int mesesRestantes = (int) monthsBetween(convertToLocal(today), convertToLocal(correo.getFechaEnvio()));
+        System.out.println(" ! Meses entre dia actual y la fecha meta " + mesesRestantes);
+
+        if (meses <= mesesRestantes && meses > 0) {
+            allOk = true;
+        } else {
+            System.out.println(" Error: Datos proporcionados son erroneos. \n"
+                    + "* La cantidad de meses proporcionada sobrepasa los meses actuales\n");
+        }
+
+        return allOk;
+    }
+
+    public Date genFechasxMes(Calendar calendario) {
+        int orgMonth = calendario.getTime().getMonth();
+
+        calendario.set(Calendar.MONTH, orgMonth - 1);
+        Date fecha = calendario.getTime();
+
+        return fecha;
+    }
+
+    public void testMeses(Correo correo, int meses) {
+
+        Calendar cal = new GregorianCalendar();
+        cal.setTime(correo.getFechaEnvio());
+        List<Date> fechas = new ArrayList<>();
+
+        for (int i = 1; i <= meses; i++) {
+            fechas.add(this.genFechasxMes(cal));
+        }
+
+        Collections.sort(fechas);
+
+        List<Recordatorio> recordatorios = this.asignarCuerpo(fechas, correo);
+        for (Recordatorio rec : recordatorios) {
+            System.out.println("Rec: " + rec.getId());
+            System.out.println("Fecha: " + rec.getFechaEnvio());
+        }
+
+    }
+
+    /*                           -- Fin seccion Meses --                                         */
+ /*                          -- Seccion MesesXVecesX Frecuencia --                            */
+    public boolean checkDatosMesesXFrecuencia(Correo correo, int veces, int meses, int frecuencia) {
+
+        boolean allOk = true;
+        Calendar cal = new GregorianCalendar();
+        cal.setTime(correo.getFechaEnvio());
+        List<Date> fechas = new ArrayList<>();
+        int maxDay = 0;
+        int capxMes = 0;
+
+        for (int i = 1; i <= meses; i++) {
+            Date fecha = this.genFechasxMes(cal);
+            fechas.add(fecha);
+        }
+        Collections.sort(fechas);
+
+        for (Date fecha : fechas) {
+            Calendar calendario = new GregorianCalendar();
+            calendario.setTime(fecha);
+            maxDay = calendario.getActualMaximum(Calendar.DAY_OF_MONTH);
+            capxMes = Math.round(maxDay / veces);
+
+            if (capxMes < frecuencia) {
+                allOk = false;
+                System.out.println(" Error: Frecuencia digitada no se soporta en el mes " + calendario.getTime().getMonth() + " del año " + calendario.getTime().getYear());
+            }
+
+        }
+
+        if (allOk) {
+            System.out.println(" All set! (Meses x Frecuencia)");
+        }
+        return allOk;
+    }
+
+   
+
+    public void testerMesesXFrecuencia(Correo correo, int veces, int meses, int frecuencia) {
+
+        boolean chk = this.checkDatosMesesXFrecuencia(correo, veces, meses, frecuencia);
+        List<Date> fechas = new ArrayList<>();
+        List<Date> borrador=new ArrayList<>();
+        Calendar cal = new GregorianCalendar();
+        cal.setTime(correo.getFechaEnvio());
+
+        if (chk) {
+            for (int i = 1; i <= meses; i++) {
+                Date fecha = this.genFechasxMes(cal);
+                fechas.add(fecha);
+            }
+            
+            for(Date lista: fechas){
+            System.out.println("gen Fecha: "+lista.toGMTString());
+            }
+            
+            
+            for (Date fechaIN : fechas) {
+                
+                 Calendar dummyCal = new GregorianCalendar();
+                 dummyCal.setTime(fechaIN);
+                 dummyCal.set(Calendar.DAY_OF_MONTH, 1);
+                 borrador.add(dummyCal.getTime());
+                 
+                for (int vez = 1; vez < veces; vez++) {
+                    dummyCal.add(Calendar.DAY_OF_MONTH, frecuencia);
+                    borrador.add(dummyCal.getTime());
+                }
+            }
+            
+            
+            
+            
+
+        List<Recordatorio> recordatorios = this.asignarCuerpo(borrador, correo);
+        for (Recordatorio rec : recordatorios) {
+            System.out.println("Rec: " + rec.getId());
+            System.out.println("Fecha: " + rec.getFechaEnvio());
+        }
+            
+        }
+        
+       
+
+    }
+
+    /*                         -- Fin seccion MesesXVecesX Frecuencia*/
  /*----------------------------- Funcionalidades y convertores ----------------------------------*/
  /*   -convertToLocal-   
 	 * Convierte los datos tipo Date a Local date 
@@ -206,7 +371,13 @@ public class RecordatorioFunc {
     /*  -monthsBetween- 
 	 * Calcula los meses entre las dos fechas tipo LocalDate*/
     public int monthsBetween(LocalDate d1, LocalDate d2) {
-        int restantes =  d2.getMonthValue() - d1.getMonthValue();
+        int restantes = 0;
+        if (d1.getYear() <= d2.getYear()) {
+            restantes = d1.getMonthValue() - d2.getMonthValue();
+        } else {
+            restantes = d2.getMonthValue() - d1.getMonthValue();
+        }
+
         return restantes;
     }
 
@@ -218,47 +389,70 @@ public class RecordatorioFunc {
         int year = calendar.get(Calendar.YEAR);
         return year;
     }
-    
+
     /*   -- genCalendar-- */
-    /*Pasa un objeto tipo date a calendario */
-    public Calendar genCalendar(Date fecha){
-        Calendar cal = new GregorianCalendar(); 
+ /*Pasa un objeto tipo date a calendario */
+    public Calendar genCalendar(Date fecha) {
+        Calendar cal = new GregorianCalendar();
         cal.setTime(fecha);
         return cal;
     }
-    
-    
+
     /* genDate */
-    /* Genera un valor tipo date con los valores definidos de YYYY/MM/DD*/
-    public Date dateGen(int y, int m, int d){
-        Date fecha =  new Date();
+ /* Genera un valor tipo date con los valores definidos de YYYY/MM/DD*/
+    public Date dateGen(int y, int m, int d) {
+        Date fecha = new Date();
         fecha.setYear(y);
         fecha.setMonth(m);
         fecha.setDate(d);
         return fecha;
     }
+
     /* -- calendarToDate -- 
      Pasa calores calendar a Date*/
-    public Date calendarToDate(Calendar cal){
+    public Date calendarToDate(Calendar cal) {
         return cal.getTime();
     }
-    
-    public boolean isLate(Date today, Date due){
-       boolean late =false;
-       if(today.after(due)){
-           late=true;
-       }
-       return late;   
+
+    public Calendar dateToCalendar(Date date) {
+        Calendar cal = new GregorianCalendar();
+        cal.setTime(date);
+        return cal;
     }
-    
+
+    public boolean isLate(Date today, Date due) {
+        boolean late = false;
+        if (due.before(today)) {
+            late = true;
+        }
+        return late;
+    }
+
     /* -- compareDates-- */
-   /* Compara dos fechas si son iguales*/
-    public boolean compareDates(Date cal1 , Date cal2){
+ /* Compara dos fechas si son iguales*/
+    public boolean compareDates(Date cal1, Date cal2) {
         boolean chk = false;
-         
-        if(cal1.equals(cal2)){
-            chk=true;
+
+        if (cal1.equals(cal2)) {
+            chk = true;
         }
         return chk;
+    }
+
+    /*   --  asignarCuerpo  -- 
+    Le asigna el cuerpo a un recordatorio en base a las fechas generadas*/
+    public List<Recordatorio> asignarCuerpo(List<Date> fechas, Correo correo) {
+        List<Recordatorio> recordatorios = new ArrayList<>();
+
+        for (Date fecha : fechas) {
+            Recordatorio recordatorio = new Recordatorio();
+            recordatorio.setCorreo(correo);
+            recordatorio.setFechaEnvio(fecha);
+            recordatorio.setEstado(Boolean.FALSE);
+            recordatorios.add(recordatorio);
+            dao.save(recordatorio);
+        }
+
+        return recordatorios;
     }
 }

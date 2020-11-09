@@ -117,16 +117,26 @@ public class TesterMensajeria {
     	 System.out.println("C : "+c.getId());	
     	 
      }
- 	 
-     @SuppressWarnings("unchecked")
+ 	 /* vecesXMeses
+         @SuppressWarnings("unchecked")
 	 List<Correo> correos = (List<Correo>) em.createQuery("FROM Correo").getResultList();
  	 Correo dummyCorreo = correos.get(0);
  	 System.out.println(" DummyCorreo: "+dummyCorreo.getId()+" Due to: "+dummyCorreo.getFechaEnvio().toString());
- 	 funcion.testVecesxMes(dummyCorreo, 2, 1);
-     
-      	 
-     
-     
+ 	 funcion.testVecesxMes(dummyCorreo, 18, 1);
+         */
+      	
+         /* xMeses
+      @SuppressWarnings("unchecked")
+      List<Correo> correos = (List<Correo>) em.createQuery("FROM Correo").getResultList();
+      Correo dummyCorreo = correos.get(0);
+      System.out.println(" DummyCorreo: "+dummyCorreo.getId()+" Due to: "+dummyCorreo.getFechaEnvio().toString());
+      funcion.testMeses(dummyCorreo, 7);
+       */
+         
+      List<Correo> correos = (List<Correo>) em.createQuery("FROM Correo").getResultList();
+      Correo dummyCorreo = correos.get(0);
+      System.out.println(" DummyCorreo: "+dummyCorreo.getId()+" Due to: "+dummyCorreo.getFechaEnvio().toString());
+      funcion.testerMesesXFrecuencia(dummyCorreo, 4, 1,4 );
     }
     
     
