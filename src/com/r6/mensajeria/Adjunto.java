@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 
 @Entity
@@ -34,6 +35,8 @@ public class Adjunto implements Serializable {
    @ManyToMany(mappedBy = "adjuntosBitacora")
    private Set<Bitacora> bitacora;
    
+   
+   @Type(type="org.hibernate.type.MaterializedBlobType")
    private byte[] archivo;
    
    public Adjunto(){};

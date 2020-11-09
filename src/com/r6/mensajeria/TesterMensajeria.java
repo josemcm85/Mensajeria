@@ -397,9 +397,7 @@ public class TesterMensajeria {
         /* Crear y enviar Correo 	*/
       
        funtion.crearRecxMes(c, 2);
-       
        //Devuelve correos con recordatorios
-       
         funtion.getCorreoswRecordatorios();
 
         
