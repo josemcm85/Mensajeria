@@ -46,12 +46,7 @@ public class Usuario implements Serializable {
     private Set<Contacto> contactos;
 
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "Tbl_remitente",
-            joinColumns = {
-                @JoinColumn(name = "Id_usuario", referencedColumnName = "Id_usuario")},
-            inverseJoinColumns = {
-                @JoinColumn(name = "Id_correo", referencedColumnName = "Id_correo")})
+    @ManyToMany(mappedBy = "usuarios")
     private Set<Correo> correos;
 
     @ManyToMany(mappedBy = "usuarioscopiados")
