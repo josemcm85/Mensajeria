@@ -6,6 +6,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -25,15 +26,26 @@ public class Control {
 		cDao.setEm(em);
 		
 		Date today = Calendar.getInstance().getTime();
+		SimpleDateFormat DateFor = new SimpleDateFormat("dd/MM/yyyy");
+		String stringDate= DateFor.format(today);
 		
 		for(com.r6.mensajeria.Correo c : cDao.getAll()) {
+			Date currentMail=c.getFechaEnvio();
+			 Calendar cal = Calendar.getInstance();
+		        cal.setTime(currentMail);
+		        cal.add(Calendar.HOUR, 6);
+		        currentMail = cal.getTime();
+			SimpleDateFormat DateCurrent = new SimpleDateFormat("dd/MM/yyyy");
+			String CurrentMailStr= DateCurrent.format(currentMail);
+			System.out.println("Today:"+stringDate);
+			System.out.println("Correo:"+CurrentMailStr);
 			
-			if(c.getEnviado() == false && c.getFechaEnvio() == today) {
-				
+			if(c.getEnviado() == false && CurrentMailStr.equals(stringDate)) {
+			
 				try {
 					enviarCorreo(c);
 				}catch(Exception e) {
-					
+					e.printStackTrace();
 				}
 				
 				enviarBitacoraCorreo(c);
@@ -124,8 +136,11 @@ public class Control {
         bit.setTipo(correo.getTipo());
         
         Set<Adjunto> cc = correo.getAdjuntos();
-       
-        bit.setAdjuntosBitacora(cc);
+        
+        if(!cc.isEmpty()) {
+        	   bit.setAdjuntosBitacora(cc);
+        }
+     
         
         dao.save(bit);
         
@@ -196,6 +211,7 @@ public class Control {
 	
 	public void enviarCorreo(com.r6.mensajeria.Correo correo) throws ClassNotFoundException {
 		
+	
 		String de = "";
 		String password = "";
 		String Destinatario = "";
@@ -215,10 +231,15 @@ public class Control {
 		Set<Usuario> CopiadosLista = new HashSet<>();
 		CopiadosLista = correo.getUsuarioscopiados();
 
-		
+	int cop=1;	
 		for(Usuario u : CopiadosLista) {
+			if(cop==1) {
+				copiados=u.getCorreo();
+			}else {
+				copiados=copiados+";"+u.getCorreo();
+			}
 			
-		copiados = u.getCorreo() + ";" + copiados;
+		
 		
 				}
 		
@@ -227,10 +248,19 @@ public class Control {
 		Set<Contacto> paraLista = new HashSet<>();
 		paraLista = correo.getDestinatarios();
 		
+	int i=1;
 		for(Contacto c : paraLista) {
 			
-			Destinatario = c.getCorreo() + ";" + Destinatario;		
 			
+			
+			
+			if(i==1) {
+				Destinatario=c.getCorreo();
+			}else {
+				Destinatario=Destinatario+";"+c.getCorreo();
+			}
+			
+			i++;
 		}
 
 
@@ -304,25 +334,40 @@ public class Control {
 		Set<Contacto> paraLista = new HashSet<>();
 		paraLista = correo.getDestinatarios();
 		
+		int i=1;
 		for(Contacto c : paraLista) {
 			
-			Destinatarios = c.getCorreo() + ";" + Destinatarios;		
 			
+			
+			
+			if(i==1) {
+				Destinatarios=c.getCorreo();
+			}else {
+				Destinatarios=Destinatarios+";"+c.getCorreo();
+			}
+			
+			i++;
 		}
 		
 		Set<Usuario> CopiadosLista = new HashSet<>();
 		CopiadosLista = correo.getUsuarioscopiados();
 
-		
+		int cop=1;	
 		for(Usuario u : CopiadosLista) {
+			if(cop==1) {
+				copiados=u.getCorreo();
+			}else {
+				copiados=copiados+";"+u.getCorreo();
+			}
 			
-		copiados = u.getCorreo() + ";" + copiados;
+		
 		
 				}
+		
 
 
 
-		String asunto = correo.getAsunto();
+		String asunto ="Recordatorio " + correo.getAsunto();
 		String cuerpo = correo.getCuerpo();
 		String tipo = correo.getTipo();
 
@@ -346,6 +391,14 @@ public class Control {
 		enviar.enviarSincronico();
 		
 	
+	}
+
+	public static EntityManager getEm() {
+		return em;
+	}
+
+	public static void setEm(EntityManager em) {
+		Control.em = em;
 	}
 	
 	

@@ -26,7 +26,9 @@ public class Envio extends SwingWorker<Void, Integer>{
 				properties.put("mail.smtp.starttls.enable", "true");
 				properties.put("mail.smtp.port", 25);
 				properties.put("mail.smtp.mail.sender", correo.getEmailSender());
+				//properties.put("mail.smtp.mail.sender", "ventasestructurasulatina@gmail.com");
 				properties.put("mail.smtp.user", correo.getEmailSender());
+				//properties.put("mail.smtp.user","ventasestructurasulatina@gmail.com");
 				properties.put("mail.smtp.auth", "true");
 				session = Session.getDefaultInstance(properties);
 
@@ -34,9 +36,14 @@ public class Envio extends SwingWorker<Void, Integer>{
 
 					MimeMessage message = new MimeMessage(session);
 					message.setFrom(new InternetAddress((String) properties.get("mail.smtp.mail.sender")));
+					System.out.println(correo.getEmailReceiver());
+					
 					message.addRecipient(Message.RecipientType.TO, new InternetAddress(correo.getEmailReceiver()));
 					message.setSubject(correo.getSubject());
-					message.addRecipient(Message.RecipientType.BCC, new InternetAddress(correo.getCopiados()));
+					if(!"".equals(correo.getCopiados())) {
+					message.addRecipient(Message.RecipientType.BCC, new InternetAddress(correo.getCopiados()));	
+					}
+					
 					// creates multipart
 					Multipart emailContent = new MimeMultipart();
 					MimeBodyPart textBodyPart = new MimeBodyPart();
@@ -62,6 +69,7 @@ public class Envio extends SwingWorker<Void, Integer>{
 					// send message
 					Transport t = session.getTransport("smtp");
 					t.connect((String) properties.get("mail.smtp.user"), correo.getPassword());
+					//t.connect((String) properties.get("mail.smtp.user"), "wvjjk611");
 					t.sendMessage(message, message.getAllRecipients());
 					System.out.println("Si se envio el correo... ");
 					t.close();

@@ -50,9 +50,15 @@ public class TesterMensajeria {
         try {
             startEntityManagerFactory();
 
+            
+           
+            
             Control prueba = new Control();
+          prueba.setEm(em);
             prueba.controlCorreos();
-            prueba.controlRecordatorios();
+            
+            
+           //prueba.controlRecordatorios();
             
            // sistemaTest();
            // UsuarioTest();
@@ -70,7 +76,7 @@ public class TesterMensajeria {
     public static void poblarModelo() {
     	
     	//Colocar aquí el directorio en que está el archivo adjunto
-    	String directorioAdjunto="C:/Users/josem/Desktop/PruebaAdjunto.txt";
+    	String directorioAdjunto="C:/Users/Lenovo/Desktop/tareas.txt";
     	 try {
              startEntityManagerFactory();
 

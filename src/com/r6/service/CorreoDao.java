@@ -11,6 +11,7 @@ import com.r6.mensajeria.Recordatorio;
 import java.util.List;
 import java.util.Optional;
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -40,9 +41,9 @@ public class CorreoDao implements Dao<Correo> {
 
     @Override
     public List<Correo> getAll() {
-    	 List<Correo> correos = em.createNamedQuery("Correo.findAll", Correo.class).getResultList();
-
-        return correos;
+    	 TypedQuery<Correo> correos = em.createNamedQuery("Correo.findAll", Correo.class);
+    	 
+        return correos.getResultList();
 
     }
 
