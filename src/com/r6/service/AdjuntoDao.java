@@ -6,9 +6,12 @@
 package com.r6.service;
 
 import com.r6.mensajeria.Adjunto;
+import com.r6.mensajeria.Sistema;
+
 import java.util.List;
 import java.util.Optional;
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -20,14 +23,23 @@ public class AdjuntoDao implements Dao<Adjunto> {
 
     @Override
     public Optional<Adjunto> get(Integer id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		Optional<Adjunto> adj=Optional.ofNullable((Adjunto)em.createNamedQuery("Adjunto.find").setParameter("idParam",id).
+				getSingleResult());
+		
+		return adj;
     }
 
     @Override
     public List<Adjunto> getAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		TypedQuery<Adjunto> AdjuntoList = em.createNamedQuery("Adjunto.findAll", Adjunto.class);
+		return AdjuntoList.getResultList();
     }
 
+    public List<Adjunto> getAllFiles() {
+		TypedQuery<Adjunto> AdjuntoList = em.createNamedQuery("Adjunto.findAllFiles", Adjunto.class);
+		return AdjuntoList.getResultList();
+    }
+    
     @Override
     public void save(Adjunto t) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

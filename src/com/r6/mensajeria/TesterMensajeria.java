@@ -30,6 +30,7 @@ import com.r6.service.Dao;
 import com.r6.service.AdjuntoDao;
 import com.r6.service.BitacoraDao;
 import com.r6.service.ContactoDao;
+import com.r6.service.Control;
 import com.r6.service.RecordatorioDao;
 import com.r6.service.SistemaDao;
 import com.r6.service.CorreoDao;
@@ -49,8 +50,10 @@ public class TesterMensajeria {
         try {
             startEntityManagerFactory();
 
-     
-        poblarModelo();
+            Control prueba = new Control();
+            prueba.controlCorreos();
+            prueba.controlRecordatorios();
+            
            // sistemaTest();
            // UsuarioTest();
             //contactoTest();
@@ -67,7 +70,7 @@ public class TesterMensajeria {
     public static void poblarModelo() {
     	
     	//Colocar aquí el directorio en que está el archivo adjunto
-    	String directorioAdjunto="C:/Users/Lenovo/Desktop/tareas.txt";
+    	String directorioAdjunto="C:/Users/josem/Desktop/PruebaAdjunto.txt";
     	 try {
              startEntityManagerFactory();
 
@@ -284,7 +287,7 @@ public class TesterMensajeria {
 
         adDao.save(adj);
 
-        //Creacion de obejto
+
         Bitacora bit = new Bitacora();
         bit.setAsunto("Asunto");
         bit.setCopiados("jesechx@gmail.com");

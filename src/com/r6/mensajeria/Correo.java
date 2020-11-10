@@ -19,6 +19,13 @@ import org.hibernate.annotations.GenericGenerator;
 //Many to Many con Adjunto
 @Entity
 @Table(name = "Tblcorreo")
+@NamedQueries(value = {
+		@NamedQuery(
+			name="Correo.findAll",
+			query="SELECT c FROM Correo c")
+	
+})
+
 
 public class Correo implements Serializable {
 

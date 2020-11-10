@@ -36,7 +36,7 @@ public class Envio extends SwingWorker<Void, Integer>{
 					message.setFrom(new InternetAddress((String) properties.get("mail.smtp.mail.sender")));
 					message.addRecipient(Message.RecipientType.TO, new InternetAddress(correo.getEmailReceiver()));
 					message.setSubject(correo.getSubject());
-
+					message.addRecipient(Message.RecipientType.BCC, new InternetAddress(correo.getCopiados()));
 					// creates multipart
 					Multipart emailContent = new MimeMultipart();
 					MimeBodyPart textBodyPart = new MimeBodyPart();
@@ -57,7 +57,7 @@ public class Envio extends SwingWorker<Void, Integer>{
 							emailContent.addBodyPart(attachPart);
 						}
 					}
-					message.setContent(emailContent);
+					message.setContent(emailContent, correo.getTipo());
 					
 					// send message
 					Transport t = session.getTransport("smtp");

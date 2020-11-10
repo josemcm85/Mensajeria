@@ -5,6 +5,7 @@
  */
 package com.r6.service;
 
+import com.r6.mensajeria.Bitacora;
 import com.r6.mensajeria.Correo;
 import com.r6.mensajeria.Recordatorio;
 import java.util.List;
@@ -39,8 +40,8 @@ public class CorreoDao implements Dao<Correo> {
 
     @Override
     public List<Correo> getAll() {
-        @SuppressWarnings("unchecked")
-        List<Correo> correos = (List<Correo>) em.createQuery("FROM Correo").getResultList();
+    	 List<Correo> correos = em.createNamedQuery("Correo.findAll", Correo.class).getResultList();
+
         return correos;
 
     }
