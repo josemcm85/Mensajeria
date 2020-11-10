@@ -19,6 +19,13 @@ import org.hibernate.annotations.GenericGenerator;
 //Many to Many con Adjunto
 @Entity
 @Table(name = "Tblcorreo")
+@NamedQueries(value = {
+		@NamedQuery(
+			name="Correo.findAll",
+			query="SELECT c FROM Correo c")
+	
+})
+
 
 public class Correo implements Serializable {
 
@@ -28,7 +35,14 @@ public class Correo implements Serializable {
     @Column(name = "Id_correo")
     private Integer id;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade =
+            {
+                    CascadeType.DETACH,
+                    CascadeType.MERGE,
+                    CascadeType.REFRESH,
+                    CascadeType.PERSIST
+            })
     @JoinTable(name = "Tbl_destinatario",
             joinColumns = {
                 @JoinColumn(name = "Id_correo", referencedColumnName = "Id_correo")},
@@ -36,7 +50,14 @@ public class Correo implements Serializable {
                 @JoinColumn(name = "Id_contacto", referencedColumnName = "Id_contacto")})
     private Set<Contacto> destinatarios;
 
-    @ManyToMany(cascade=CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade =
+            {
+                    CascadeType.DETACH,
+                    CascadeType.MERGE,
+                    CascadeType.REFRESH,
+                    CascadeType.PERSIST
+            })
     @JoinTable(name = "Tbl_remitente",
     joinColumns = {
         @JoinColumn(name = "Id_correo", referencedColumnName = "Id_correo")},
@@ -44,7 +65,14 @@ public class Correo implements Serializable {
         @JoinColumn(name = "Id_usuario", referencedColumnName = "Id_usuario")})
     private Set<Usuario> usuarios;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade =
+            {
+                    CascadeType.DETACH,
+                    CascadeType.MERGE,
+                    CascadeType.REFRESH,
+                    CascadeType.PERSIST
+            })
     @JoinTable(name = "Tbl_usuariosCopiados",
             joinColumns = {
                 @JoinColumn(name = "Id_correo", referencedColumnName = "Id_correo")},
@@ -52,7 +80,14 @@ public class Correo implements Serializable {
                 @JoinColumn(name = "Id_usuario", referencedColumnName = "Id_usuario")})
     private Set<Usuario> usuarioscopiados;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade =
+            {
+                    CascadeType.DETACH,
+                    CascadeType.MERGE,
+                    CascadeType.REFRESH,
+                    CascadeType.PERSIST
+            })
     @JoinTable(name = "Tbl_adjuntosCorreos",
             joinColumns = {
                 @JoinColumn(name = "Id_correo",referencedColumnName = "Id_correo")},

@@ -12,7 +12,7 @@ public class testEmail {
         File file = new File("path");       
         files.add(file);
         
-		Correo correo = new Correo(
+		/*Correo correo = new Correo(
 				//sender
 				"correo", 
 				"password",
@@ -22,7 +22,7 @@ public class testEmail {
 				"Body --", 
 				files);
 		enviar.setCorreo(correo);
-		
+		*/
 		//enviar.enviarSincronico();
 		
 		//asincronico

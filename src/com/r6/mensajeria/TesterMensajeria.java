@@ -30,6 +30,7 @@ import com.r6.service.Dao;
 import com.r6.service.AdjuntoDao;
 import com.r6.service.BitacoraDao;
 import com.r6.service.ContactoDao;
+import com.r6.service.Control;
 import com.r6.service.RecordatorioDao;
 import com.r6.service.SistemaDao;
 import com.r6.service.CorreoDao;
@@ -49,8 +50,16 @@ public class TesterMensajeria {
         try {
             startEntityManagerFactory();
 
-     
-        poblarModelo();
+            
+           
+            
+            Control prueba = new Control();
+          prueba.setEm(em);
+            prueba.controlCorreos();
+            
+            
+           //prueba.controlRecordatorios();
+            
            // sistemaTest();
            // UsuarioTest();
             //contactoTest();
@@ -284,7 +293,7 @@ public class TesterMensajeria {
 
         adDao.save(adj);
 
-        //Creacion de obejto
+
         Bitacora bit = new Bitacora();
         bit.setAsunto("Asunto");
         bit.setCopiados("jesechx@gmail.com");

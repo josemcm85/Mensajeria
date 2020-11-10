@@ -14,6 +14,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
@@ -21,6 +23,15 @@ import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name ="Tbladjunto")
+@NamedQueries(value = {
+		@NamedQuery(
+			name="Adjunto.find",
+			query="SELECT a FROM Adjunto a WHERE a.id = :idParam"),
+		@NamedQuery(
+			name="Adjunto.findAll",
+			query="SELECT a FROM Adjunto a ORDER BY a.id")
+	
+})
 public class Adjunto implements Serializable {
     
    @Id

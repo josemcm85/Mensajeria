@@ -9,16 +9,20 @@ public class Correo {
     private String emailReceiver;
     private String subject;
     private String body;
+    private String tipo;
+    private String Copiados;
 
     private ArrayList<File> attachedFiles;
 
-    public Correo(String emailSender, String password, String emailReceiver, String subject, String body, ArrayList<File> attachedFiles) {
+    public Correo(String emailSender, String password, String emailReceiver, String subject, String body, ArrayList<File> attachedFiles, String tipo, String Copiados) {
         this.emailSender = emailSender;
         this.password = password;
         this.emailReceiver = emailReceiver;
         this.subject = subject;
         this.body = body;
         this.attachedFiles = attachedFiles;
+        this.tipo = tipo;
+        this.Copiados = Copiados;
     }
 
     public ArrayList<File> getAttachedFiles() {
@@ -69,5 +73,21 @@ public class Correo {
     public void setBody(String body) {
         this.body = body;
     }
+
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+
+	public String getCopiados() {
+		return Copiados;
+	}
+
+	public void setCopiados(String copiados) {
+		Copiados = copiados;
+	}
 
 }

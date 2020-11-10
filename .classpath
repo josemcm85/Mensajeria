@@ -18,5 +18,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="E:/U/Cuatri 3-2020/Componentes/Demos-API-Librerias/JavaMailTest/Dependencias/javax.mail.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Lenovo/Downloads/swing-worker.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Lenovo/Downloads/activation.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
