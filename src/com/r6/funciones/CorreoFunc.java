@@ -35,13 +35,13 @@ public class CorreoFunc {
         return em;
     }
 
-    public Correo crearCorreo(String asunto, String cuerpo, boolean estado, Date fecha, String tipo) {
+    public Correo crearCorreo(String asunto, String cuerpo,Date fecha, String tipo,boolean infinito) {
         Correo newCorreo = new Correo();
         newCorreo.setAsunto(asunto);
         newCorreo.setCuerpo(cuerpo);
-        newCorreo.setEnviado(estado);
         newCorreo.setFechaEnvio(fecha);
         newCorreo.setTipo(tipo);
+        newCorreo.setInifinito(infinito);
         return newCorreo;
     }
 
@@ -102,7 +102,7 @@ public class CorreoFunc {
           
                 List<Recordatorio> recList=recDao.getByMail(correo);
                 
-                //Hacer método get recordatorios por idcorreo
+                //Hacer mï¿½todo get recordatorios por idcorreo
                 
                
                 if (recList.size() == 0) {
@@ -121,14 +121,14 @@ public class CorreoFunc {
 
     }
 
-    public void editarCorreo(int target, String asunto, String cuerpo, boolean estado, Date fecha, String tipo) {
+    public void editarCorreo(int target, String asunto, String cuerpo, Date fecha, String tipo,boolean infinito) {
         try {
             Correo correo = daoCorreo.getById(target);
             correo.setAsunto(asunto);
             correo.setCuerpo(cuerpo);
-            correo.setEnviado(estado);
             correo.setFechaEnvio(fecha);
             correo.setTipo(tipo);
+            correo.setInifinito(infinito);
             daoCorreo.update(correo);
             System.out.println("Correo editado!");
         } catch (Exception e) {

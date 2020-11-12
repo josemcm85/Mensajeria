@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package com.r6.mensajeria;
+
 import com.r6.funciones.CorreoFunc;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -16,7 +17,6 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.Optional;
 
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -24,7 +24,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.time.Instant;
-
 
 import com.r6.service.Dao;
 import com.r6.service.AdjuntoDao;
@@ -36,6 +35,8 @@ import com.r6.service.SistemaDao;
 import com.r6.service.CorreoDao;
 import com.r6.service.UsuarioDao;
 import com.r6.funciones.RecordatorioFunc;
+import com.r6.service.Servicio;
+
 /**
  *
  * @author Nvidi
@@ -48,25 +49,31 @@ public class TesterMensajeria {
 
     public static void main(String[] args) {
         try {
-            startEntityManagerFactory();
+            
+            
+            Servicio.setServerURL("jdbc:mysql://localhost:3306/mensajeria?serverTimezone=UTC");
+            Servicio.setUsername("root");
+            Servicio.setPassword("123");
+            Servicio.setHbm2DDLprotocol("update");
+            Servicio.setDriver("com.mysql.jdbc.Driver");
+            Servicio.setDialect("org.hibernate.dialect.MySQLDialect");
+            
+            Servicio.startEntityManagerFactory();
+            em = Servicio.getEm();
+            
+            //startEntityManagerFactory();
 
+           // Control prueba = new Control();
+           // prueba.setEm(em);
+           // prueba.controlCorreos();
             
-           
-            
-            Control prueba = new Control();
-          prueba.setEm(em);
-            prueba.controlCorreos();
-            
-            
-           //prueba.controlRecordatorios();
-            
-           // sistemaTest();
-           // UsuarioTest();
-            //contactoTest();
-           // bitacoraTest(); 
-          //  recordatoriosTest();
-            stopEntityManagerFactory();
-            
+            //prueba.controlRecordatorios();
+            sistemaTest();
+            UsuarioTest();
+            contactoTest();
+            bitacoraTest(); 
+            recordatoriosTest();
+           Servicio.stopEntityManagerFactory();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -74,225 +81,208 @@ public class TesterMensajeria {
     }
 
     public static void poblarModelo() {
-    	
-    	//Colocar aquí el directorio en que está el archivo adjunto
-    	String directorioAdjunto="C:/Users/Lenovo/Desktop/tareas.txt";
-    	 try {
-             startEntityManagerFactory();
 
-      
-          SistemaDao sis=new SistemaDao(em);
-          
-         Sistema sist=new Sistema();
-         sist.setNombre("Contabilidad");
-          sist.setActivo(true);
-          
-          sis.save(sist);
-             
-          UsuarioDao uDao=new UsuarioDao(em);
-          
-       
-          Usuario usuario = new Usuario(2,"teamr6cr@gmail.com","bada907817",false,false,false);
-          usuario.setSistema(sist);
-          uDao.save(usuario);
-          Usuario usuario2 = new Usuario(2,"ventasestructurasulatina@gmail.com","wvjjk611",false,false,false);
-          usuario2.setSistema(sist);
-          uDao.save(usuario2);
-          
-          
-          ContactoDao conc=new ContactoDao();
-          conc.setEm(em);
-          
-          Contacto contacto1=new Contacto();
-          contacto1.setNombre("Wes");
-          contacto1.setApellido("Mena");
-          contacto1.setCorreo("weslinmena@gmail.com");
-          contacto1.setSuscriptor(true);
-          contacto1.setUsuario(usuario);
-          conc.save(contacto1);
-          
-          Contacto cont=new Contacto();
-          cont.setNombre("Jese");
-          cont.setApellido("Chavez");
-          cont.setCorreo("jese.chavez@ulatina.net");
-          cont.setSuscriptor(false);
-          cont.setUsuario(usuario);
-          conc.save(cont);
-          
-          Contacto contacto3=new Contacto();
-          contacto3.setNombre("Jose");
-          contacto3.setApellido("Chaves");
-          contacto3.setCorreo("josemcm85@gmail.com");
-          contacto3.setSuscriptor(true);
-          contacto3.setUsuario(usuario2);
-          conc.save(contacto3);
-          
-          
-          Contacto contacto4=new Contacto();
-          contacto4.setNombre("Daniel");
-          contacto4.setApellido("Hernández");
-          contacto4.setCorreo("daniel.hernandez20@ulatina.net");
-          contacto4.setSuscriptor(false);
-          contacto4.setUsuario(usuario2);
-          conc.save(contacto4);
-          
-          
-          
-          
-          CorreoFunc funtion = new CorreoFunc();
-          RecordatorioFunc recFuntion = new RecordatorioFunc();
-          funtion.setEm(em);
-          recFuntion.setEm(em);
-          
-          Date date = new Date();
-          Calendar cal = new GregorianCalendar();
-          cal.setTime(date);
-          cal.add(Calendar.MONTH, 3);
-          cal.add(Calendar.DAY_OF_MONTH, 1);
-          Correo c = new Correo();
-          c.setAsunto(" Asunto1 ");
-          c.setCuerpo(" Cuerpo1 ");
-          c.setFechaEnvio(cal.getTime());
-          c.setTipo("html/text");
-          c.setEnviado(Boolean.FALSE);
-          
-        //Remitente
-          Set<Usuario> usuarioList1=new HashSet<>();
-          usuarioList1.add(usuario);
-          c.setUsuarios(usuarioList1);
-         
-          //Destinatario
-          Set<Contacto>contactList1=new HashSet<>();
-          contactList1.add(contacto1);
-          contactList1.add(cont);
-          c.setDestinatarios(contactList1);
-          
-          //Copiados
-          Set<Usuario> usuarioCopyList=new HashSet<>();
-          usuarioCopyList.add(usuario2);
-          c.setUsuarioscopiados(usuarioCopyList);
-          
-          //Adjuntos
-          AdjuntoDao adDao = new AdjuntoDao();
-          adDao.setEm(em);
+        //Colocar aquï¿½ el directorio en que estï¿½ el archivo adjunto
+        String directorioAdjunto = "C:/Users/Lenovo/Desktop/tareas.txt";
+        try {
+            startEntityManagerFactory();
 
-          File file = new File(directorioAdjunto);
-          byte[] fileContent = Files.readAllBytes(file.toPath());
-          //Adjunto   \
-          
-          List<File> files  = new ArrayList<>();
-          Adjunto adj = new Adjunto();
-          adj.setArchivo(fileContent);
+            SistemaDao sis = new SistemaDao(em);
 
-          adDao.save(adj);
-          
-          Set<Adjunto> adjuntoList=new HashSet<>();
-          adjuntoList.add(adj);
-          
-          c.setAdjuntos(adjuntoList);
-          
-         funtion.crearRecxMes(c, 2);
-          
-         
-         
-         //Correo 2 
-         Date date2 = new Date();
-         Calendar cal2 = new GregorianCalendar();
-         cal2.setTime(date2);
-         Correo correo2 = new Correo();
-         correo2.setAsunto(" Asunto2 ");
-         correo2.setCuerpo(" Cuerpo2 ");
-         correo2.setFechaEnvio(cal2.getTime());
-         correo2.setTipo("html/text");
-         correo2.setEnviado(Boolean.FALSE);
-         
-       //Remitente
-         Set<Usuario> usuarioList2=new HashSet<>();
-         usuarioList2.add(usuario);
-         correo2.setUsuarios(usuarioList2);
-         
-         //Destinatario
-         Set<Contacto>contactList2=new HashSet<>();
-         contactList2.add(cont);
-     
-         correo2.setDestinatarios(contactList2);
-         
-         funtion.crearRecxMes(correo2,0);
-        
-         
-         //Correo3
-         Date date3 = new Date();
-         Calendar cal3 = new GregorianCalendar();
-         cal3.setTime(date3);
-         Correo correo3 = new Correo();
-         correo3.setAsunto(" Asunto3 ");
-         correo3.setCuerpo(" Cuerpo3 ");
-         correo3.setFechaEnvio(cal3.getTime());
-         correo3.setTipo("html/text");
-         correo3.setEnviado(Boolean.FALSE);
-         
-       //Remitente
-         Set<Usuario> usuarioList3=new HashSet<>();
-         usuarioList3.add(usuario2);
-         correo2.setUsuarios(usuarioList3);
-         
-         //Destinatario
-         Set<Contacto>contactList3=new HashSet<>();
-         contactList3.add(contacto3);
-     
-         correo3.setDestinatarios(contactList3);
-         
-         funtion.crearRecxMes(correo3,0);
-         
-         //Correo4
-         Date date4 = new Date();
-         Calendar cal4 = new GregorianCalendar();
-         cal4.setTime(date4);
-         Correo correo4 = new Correo();
-         correo4.setAsunto(" Asunto4");
-         correo4.setCuerpo(" Cuerpo4 ");
-         correo4.setFechaEnvio(cal4.getTime());
-         correo4.setTipo("html/text");
-         correo4.setEnviado(Boolean.FALSE);
-         
-       //Remitente
-         Set<Usuario> usuarioList4=new HashSet<>();
-         usuarioList4.add(usuario2);
-         correo4.setUsuarios(usuarioList4);
-         
-         //Destinatario
-         Set<Contacto>contactList4=new HashSet<>();
-         contactList4.add(contacto4);
-     
-         correo4.setDestinatarios(contactList4);
-         
-         funtion.crearRecxMes(correo4,0);
-        
-             
-         } catch (Exception e) {
-             e.printStackTrace();
-         }
+            Sistema sist = new Sistema();
+            sist.setNombre("Contabilidad");
+            sist.setActivo(true);
+
+            sis.save(sist);
+
+            UsuarioDao uDao = new UsuarioDao(em);
+
+            Usuario usuario = new Usuario(2, "teamr6cr@gmail.com", "bada907817", false, false, false);
+            usuario.setSistema(sist);
+            uDao.save(usuario);
+            Usuario usuario2 = new Usuario(2, "ventasestructurasulatina@gmail.com", "wvjjk611", false, false, false);
+            usuario2.setSistema(sist);
+            uDao.save(usuario2);
+
+            ContactoDao conc = new ContactoDao();
+            conc.setEm(em);
+
+            Contacto contacto1 = new Contacto();
+            contacto1.setNombre("Wes");
+            contacto1.setApellido("Mena");
+            contacto1.setCorreo("weslinmena@gmail.com");
+            contacto1.setSuscriptor(true);
+            contacto1.setUsuario(usuario);
+            conc.save(contacto1);
+
+            Contacto cont = new Contacto();
+            cont.setNombre("Jese");
+            cont.setApellido("Chavez");
+            cont.setCorreo("jese.chavez@ulatina.net");
+            cont.setSuscriptor(false);
+            cont.setUsuario(usuario);
+            conc.save(cont);
+
+            Contacto contacto3 = new Contacto();
+            contacto3.setNombre("Jose");
+            contacto3.setApellido("Chaves");
+            contacto3.setCorreo("josemcm85@gmail.com");
+            contacto3.setSuscriptor(true);
+            contacto3.setUsuario(usuario2);
+            conc.save(contacto3);
+
+            Contacto contacto4 = new Contacto();
+            contacto4.setNombre("Daniel");
+            contacto4.setApellido("Hernï¿½ndez");
+            contacto4.setCorreo("daniel.hernandez20@ulatina.net");
+            contacto4.setSuscriptor(false);
+            contacto4.setUsuario(usuario2);
+            conc.save(contacto4);
+
+            CorreoFunc funtion = new CorreoFunc();
+            RecordatorioFunc recFuntion = new RecordatorioFunc();
+            funtion.setEm(em);
+            recFuntion.setEm(em);
+
+            Date date = new Date();
+            Calendar cal = new GregorianCalendar();
+            cal.setTime(date);
+            cal.add(Calendar.MONTH, 3);
+            cal.add(Calendar.DAY_OF_MONTH, 1);
+            Correo c = new Correo();
+            c.setAsunto(" Asunto1 ");
+            c.setCuerpo(" Cuerpo1 ");
+            c.setFechaEnvio(cal.getTime());
+            c.setTipo("html/text");
+
+            //Remitente
+            Set<Usuario> usuarioList1 = new HashSet<>();
+            usuarioList1.add(usuario);
+            c.setUsuarios(usuarioList1);
+
+            //Destinatario
+            Set<Contacto> contactList1 = new HashSet<>();
+            contactList1.add(contacto1);
+            contactList1.add(cont);
+            c.setDestinatarios(contactList1);
+
+            //Copiados
+            Set<Usuario> usuarioCopyList = new HashSet<>();
+            usuarioCopyList.add(usuario2);
+            c.setUsuarioscopiados(usuarioCopyList);
+
+            //Adjuntos
+            AdjuntoDao adDao = new AdjuntoDao();
+            adDao.setEm(em);
+
+            File file = new File(directorioAdjunto);
+            byte[] fileContent = Files.readAllBytes(file.toPath());
+            //Adjunto   \
+
+            List<File> files = new ArrayList<>();
+            Adjunto adj = new Adjunto();
+            adj.setArchivo(fileContent);
+
+            adDao.save(adj);
+
+            Set<Adjunto> adjuntoList = new HashSet<>();
+            adjuntoList.add(adj);
+
+            c.setAdjuntos(adjuntoList);
+
+            funtion.crearRecxMes(c, 2);
+
+            //Correo 2 
+            Date date2 = new Date();
+            Calendar cal2 = new GregorianCalendar();
+            cal2.setTime(date2);
+            Correo correo2 = new Correo();
+            correo2.setAsunto(" Asunto2 ");
+            correo2.setCuerpo(" Cuerpo2 ");
+            correo2.setFechaEnvio(cal2.getTime());
+            correo2.setTipo("html/text");
+
+            //Remitente
+            Set<Usuario> usuarioList2 = new HashSet<>();
+            usuarioList2.add(usuario);
+            correo2.setUsuarios(usuarioList2);
+
+            //Destinatario
+            Set<Contacto> contactList2 = new HashSet<>();
+            contactList2.add(cont);
+
+            correo2.setDestinatarios(contactList2);
+
+            funtion.crearRecxMes(correo2, 0);
+
+            //Correo3
+            Date date3 = new Date();
+            Calendar cal3 = new GregorianCalendar();
+            cal3.setTime(date3);
+            Correo correo3 = new Correo();
+            correo3.setAsunto(" Asunto3 ");
+            correo3.setCuerpo(" Cuerpo3 ");
+            correo3.setFechaEnvio(cal3.getTime());
+            correo3.setTipo("html/text");
+
+            //Remitente
+            Set<Usuario> usuarioList3 = new HashSet<>();
+            usuarioList3.add(usuario2);
+            correo2.setUsuarios(usuarioList3);
+
+            //Destinatario
+            Set<Contacto> contactList3 = new HashSet<>();
+            contactList3.add(contacto3);
+
+            correo3.setDestinatarios(contactList3);
+
+            funtion.crearRecxMes(correo3, 0);
+
+            //Correo4
+            Date date4 = new Date();
+            Calendar cal4 = new GregorianCalendar();
+            cal4.setTime(date4);
+            Correo correo4 = new Correo();
+            correo4.setAsunto(" Asunto4");
+            correo4.setCuerpo(" Cuerpo4 ");
+            correo4.setFechaEnvio(cal4.getTime());
+            correo4.setTipo("html/text");
+
+            //Remitente
+            Set<Usuario> usuarioList4 = new HashSet<>();
+            usuarioList4.add(usuario2);
+            correo4.setUsuarios(usuarioList4);
+
+            //Destinatario
+            Set<Contacto> contactList4 = new HashSet<>();
+            contactList4.add(contacto4);
+
+            correo4.setDestinatarios(contactList4);
+
+            funtion.crearRecxMes(correo4, 0);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-    
-    
+
     public static void bitacoraTest() throws IOException {
-    	
+
         BitacoraDao dao = new BitacoraDao();
         dao.setEm(em);
 
         AdjuntoDao adDao = new AdjuntoDao();
         adDao.setEm(em);
 
-        File file = new File("C:/Users/Lenovo/Desktop/tareas.txt");
+        File file = new File("C:/Users/Nvidi/Pictures/Screenshots/tt.png");
         byte[] fileContent = Files.readAllBytes(file.toPath());
         //Adjunto   \
-        
-        List<File> files  = new ArrayList<>();
+
+        List<File> files = new ArrayList<>();
         Adjunto adj = new Adjunto();
         adj.setArchivo(fileContent);
 
         adDao.save(adj);
-
 
         Bitacora bit = new Bitacora();
         bit.setAsunto("Asunto");
@@ -470,7 +460,6 @@ public class TesterMensajeria {
 
     public static void sistemaTest() {
         SistemaDao sisDao = new SistemaDao(em);
-        
 
         //GUARDAR
         /*
@@ -510,34 +499,28 @@ public class TesterMensajeria {
         sisDao.EnableDisable(sistDis.get());
          */
     }
-    
-    public static void UsuarioTest() {
-    	
-    	UsuarioDao usDao = new UsuarioDao(em);
 
-    	
+    public static void UsuarioTest() {
+
+        UsuarioDao usDao = new UsuarioDao(em);
+
         //GUARDAR
-    	//Orden para crear usuario (Integer idSistema, String correo, String contrasenia, Boolean admin, Boolean superUser, Boolean activo)
-    
-    	/*
+        //Orden para crear usuario (Integer idSistema, String correo, String contrasenia, Boolean admin, Boolean superUser, Boolean activo)
+        /*
         Usuario usuario = new Usuario(1,"test@mail.com","abc",false,false,false);
  
        usDao.save(usuario);
 
-    	 */      
-        
+         */
         //ACTUALIZAR
-        
         /*
         Usuario us2 =new Usuario();
         us2.actualizarUsuario(2);
         us2.setCorreo("testeando@mail.com");
         us2.setContrasenia("123");
         usDao.update(us2);
-        */
-        
+         */
         //Asignar a usuario nuevo sistema
-            
         /*
          Usuario us3 =new Usuario();
          us3.actualizarUsuario(2);
@@ -545,21 +528,16 @@ public class TesterMensajeria {
          usDao.update(us3);
           
          */
-        
-        
         //BUSCAR TODOS
 
-    	/*
+        /*
 
         for(Usuario u: usDao.getAll()) {
         	System.out.println("ID:"+u.getIdUsuario()+" Correo: "+u.getCorreo());
         }
 
-        */
-        
-        
+         */
         //BUSCAR
-        
         /*
          
         Optional<Usuario> us =usDao.get(new Integer(1));
@@ -569,28 +547,21 @@ public class TesterMensajeria {
         	System.out.println("No se encontrï¿½ el Usuario");
         }
         
-        */
+         */
         //DESACTIVAR/ACTIVAR
-        
         /*
         Optional<Usuario> us = usDao.get(new Integer(2));
         usDao.EnableDisable(us.get());
-        */
-    	
-    	
-    	
+         */
     }
-    
 
-    
-    
     public static void recordatoriosTest() {
-    	
+
         CorreoFunc funtion = new CorreoFunc();
         RecordatorioFunc recFuntion = new RecordatorioFunc();
         funtion.setEm(em);
         recFuntion.setEm(em);
-        
+
         Date date = new Date();
         Calendar cal = new GregorianCalendar();
         cal.setTime(date);
@@ -601,36 +572,25 @@ public class TesterMensajeria {
         c.setCuerpo(" Esta es una prueba con recordatorios ");
         c.setFechaEnvio(cal.getTime());
         c.setTipo("HTML");
-        c.setEnviado(Boolean.FALSE);
-       
-        
-        
+
         /* Crear y enviar Correo 	*/
-      
-       funtion.crearRecxMes(c, 2);
-       //Devuelve correos con recordatorios
+        funtion.crearRecxMes(c, 2);
+        //Devuelve correos con recordatorios
         funtion.getCorreoswRecordatorios();
 
-        
         // Editar Correo por ID
         //funtion.editarCorreo(1, "Correo Edit", "Correo Edit", true, cal.getTime(),"HTML");
-        
-        
         // Eliminar Correo
         // funtion.eliminarCorreo(1);
-        
-        
         /* Editar recordatorio por ID 
          cal.set(Calendar.DAY_OF_MONTH, Calendar.DAY_OF_MONTH-1);
          recFuntion.editarRecordatorio(1, true, cal.getTime());
          */
-        /* Eliminar recordatorio por ID
+ /* Eliminar recordatorio por ID
          recFuntion.deleteRecordatorio(1);
          */
     }
-    
-    
-    
+
     public static void startEntityManagerFactory() {
         if (entityManagerFactory == null) {
             try {

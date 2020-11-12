@@ -109,7 +109,7 @@ public class Correo implements Serializable {
 
     private String cuerpo;
 
-    private Boolean enviado;
+    private Boolean inifinito;
 
     public Correo() {
     }
@@ -123,6 +123,16 @@ public class Correo implements Serializable {
         return destinatarios;
     }
 
+    public Boolean getInifinito() {
+        return inifinito;
+    }
+
+    public void setInifinito(Boolean inifinito) {
+        this.inifinito = inifinito;
+    }
+    
+    
+    
     public Integer getId() {
         return id;
     }
@@ -203,13 +213,6 @@ public class Correo implements Serializable {
         this.cuerpo = cuerpo;
     }
 
-    public Boolean getEnviado() {
-        return enviado;
-    }
-
-    public void setEnviado(Boolean enviado) {
-        this.enviado = enviado;
-    }
     //</editor-fold>
 
 }

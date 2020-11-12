@@ -65,6 +65,8 @@ public class Bitacora {
 
     private Boolean enviado;
 
+    private Boolean infinito;
+
     public Bitacora() {
     }
 
@@ -98,6 +100,15 @@ public class Bitacora {
         return de;
     }
 
+    public Boolean getInfinito() {
+        return infinito;
+    }
+
+    public void setInfinito(Boolean infinito) {
+        this.infinito = infinito;
+    }
+    
+    
     public void setDe(String de) {
         this.de = de;
     }
