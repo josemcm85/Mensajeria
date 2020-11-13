@@ -20,12 +20,11 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name = "Tblcorreo")
 @NamedQueries(value = {
-		@NamedQuery(
-			name="Correo.findAll",
-			query="SELECT c FROM Correo c")
-	
-})
+    @NamedQuery(
+            name = "Correo.findAll",
+            query = "SELECT c FROM Correo c")
 
+})
 
 public class Correo implements Serializable {
 
@@ -36,12 +35,12 @@ public class Correo implements Serializable {
     private Integer id;
 
     @ManyToMany(fetch = FetchType.LAZY,
-            cascade =
-            {
-                    CascadeType.DETACH,
-                    CascadeType.MERGE,
-                    CascadeType.REFRESH,
-                    CascadeType.PERSIST
+            cascade
+            = {
+                CascadeType.DETACH,
+                CascadeType.MERGE,
+                CascadeType.REFRESH,
+                CascadeType.PERSIST
             })
     @JoinTable(name = "Tbl_destinatario",
             joinColumns = {
@@ -51,27 +50,27 @@ public class Correo implements Serializable {
     private Set<Contacto> destinatarios;
 
     @ManyToMany(fetch = FetchType.LAZY,
-            cascade =
-            {
-                    CascadeType.DETACH,
-                    CascadeType.MERGE,
-                    CascadeType.REFRESH,
-                    CascadeType.PERSIST
+            cascade
+            = {
+                CascadeType.DETACH,
+                CascadeType.MERGE,
+                CascadeType.REFRESH,
+                CascadeType.PERSIST
             })
     @JoinTable(name = "Tbl_remitente",
-    joinColumns = {
-        @JoinColumn(name = "Id_correo", referencedColumnName = "Id_correo")},
-    inverseJoinColumns = {
-        @JoinColumn(name = "Id_usuario", referencedColumnName = "Id_usuario")})
+            joinColumns = {
+                @JoinColumn(name = "Id_correo", referencedColumnName = "Id_correo")},
+            inverseJoinColumns = {
+                @JoinColumn(name = "Id_usuario", referencedColumnName = "Id_usuario")})
     private Set<Usuario> usuarios;
 
     @ManyToMany(fetch = FetchType.LAZY,
-            cascade =
-            {
-                    CascadeType.DETACH,
-                    CascadeType.MERGE,
-                    CascadeType.REFRESH,
-                    CascadeType.PERSIST
+            cascade
+            = {
+                CascadeType.DETACH,
+                CascadeType.MERGE,
+                CascadeType.REFRESH,
+                CascadeType.PERSIST
             })
     @JoinTable(name = "Tbl_usuariosCopiados",
             joinColumns = {
@@ -81,21 +80,19 @@ public class Correo implements Serializable {
     private Set<Usuario> usuarioscopiados;
 
     @ManyToMany(fetch = FetchType.LAZY,
-            cascade =
-            {
-                    CascadeType.DETACH,
-                    CascadeType.MERGE,
-                    CascadeType.REFRESH,
-                    CascadeType.PERSIST
+            cascade
+            = {
+                CascadeType.DETACH,
+                CascadeType.MERGE,
+                CascadeType.REFRESH,
+                CascadeType.PERSIST
             })
     @JoinTable(name = "Tbl_adjuntosCorreos",
             joinColumns = {
-                @JoinColumn(name = "Id_correo",referencedColumnName = "Id_correo")},
+                @JoinColumn(name = "Id_correo", referencedColumnName = "Id_correo")},
             inverseJoinColumns = {
                 @JoinColumn(name = "Id_adjunto", referencedColumnName = "Id_adjunto")})
     private Set<Adjunto> adjuntos;
-    
-    
 
     @OneToMany(mappedBy = "correo", cascade = CascadeType.ALL)
     private Set<Recordatorio> recordatorios;
@@ -104,6 +101,8 @@ public class Correo implements Serializable {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaEnvio;
+
+    private int intervalo;
 
     private String tipo;
 
@@ -123,6 +122,14 @@ public class Correo implements Serializable {
         return destinatarios;
     }
 
+    public int getIntervalo() {
+        return intervalo;
+    }
+
+    public void setIntervalo(int intervalo) {
+        this.intervalo = intervalo;
+    }
+
     public Boolean getInifinito() {
         return inifinito;
     }
@@ -130,9 +137,7 @@ public class Correo implements Serializable {
     public void setInifinito(Boolean inifinito) {
         this.inifinito = inifinito;
     }
-    
-    
-    
+
     public Integer getId() {
         return id;
     }
@@ -214,5 +219,4 @@ public class Correo implements Serializable {
     }
 
     //</editor-fold>
-
 }

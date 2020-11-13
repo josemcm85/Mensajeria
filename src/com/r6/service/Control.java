@@ -54,7 +54,7 @@ public class Control {
                     enviarBitacoraCorreo(c);
 
                 }
-                
+
             } catch (ParseException ex) {
                 Logger.getLogger(Control.class.getName()).log(Level.SEVERE, null, ex);
             } catch (MessagingException e) {
@@ -158,6 +158,50 @@ public class Control {
 
         if (!correo.getInifinito()) {
             cDao.delete(correo);
+        } else {
+            Calendar cal = Calendar.getInstance();
+            //Update de fecha
+            switch (correo.getIntervalo()) {
+
+                case 1: {
+                    //DIA
+                    cal.setTime(correo.getFechaEnvio());
+                    cal.add(Calendar.DATE, 1);
+                    correo.setFechaEnvio(cal.getTime());
+                    cDao.update(correo);
+
+                    break;
+                }
+
+                case 2: {
+                    //SEMANA
+                    cal.setTime(correo.getFechaEnvio());
+                    cal.add(Calendar.DATE, 7);
+                    correo.setFechaEnvio(cal.getTime());
+                    cDao.update(correo);
+                    break;
+                }
+
+                case 3: {
+                    //MES
+                    cal.setTime(correo.getFechaEnvio());
+                    cal.add(Calendar.MONTH,1);
+                    correo.setFechaEnvio(cal.getTime());
+                    cDao.update(correo);
+                    break;
+                }
+
+                case 4: {
+                    //ANIO
+                    cal.setTime(correo.getFechaEnvio());
+                    cal.add(Calendar.YEAR, 1);
+                    correo.setFechaEnvio(cal.getTime());
+                    cDao.update(correo);
+                    break;
+                }
+
+            };
+
         }
 
     }
