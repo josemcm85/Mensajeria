@@ -49,31 +49,50 @@ public class TesterMensajeria {
 
     public static void main(String[] args) {
         try {
-            
-            
+
             Servicio.setServerURL("jdbc:mysql://localhost:3306/mensajeria?serverTimezone=UTC");
             Servicio.setUsername("root");
             Servicio.setPassword("123");
             Servicio.setHbm2DDLprotocol("update");
             Servicio.setDriver("com.mysql.jdbc.Driver");
             Servicio.setDialect("org.hibernate.dialect.MySQLDialect");
-            
+
             Servicio.startEntityManagerFactory();
             em = Servicio.getEm();
-            
-            //startEntityManagerFactory();
 
-           // Control prueba = new Control();
-           // prueba.setEm(em);
-           // prueba.controlCorreos();
-            
+            //startEntityManagerFactory();
+            // Control prueba = new Control();
+            // prueba.setEm(em);
+            // prueba.controlCorreos();
+            Dao daoM = new UsuarioDao();
+            ((UsuarioDao) daoM).setEm(em);
+
+            Usuario u = (Usuario) ((UsuarioDao) daoM).get(new Integer(1)).get();
+
+            daoM = new SistemaDao();
+            ((SistemaDao) daoM).setEm(em);
+            Sistema s = (Sistema) ((SistemaDao) daoM).get(new Integer(1)).get();
+
+            CorreoDao cDao = new CorreoDao();
+            cDao.setEm(em);
+
+            for (Correo c : cDao.getByUserAndSys(u, s)) {
+                System.out.println("Correo : " + c.getId());
+                daoM = new AdjuntoDao();
+                ((AdjuntoDao) daoM).setEm(em);
+                for (Adjunto ad : (List<Adjunto>) ((AdjuntoDao) daoM).getByMail(c)) {
+                    System.out.println("Adjunto : " + ad.getId() + " * Archivo * " + ad.getArchivo().toString());
+                }
+            }
+
+
             //prueba.controlRecordatorios();
-            sistemaTest();
-            UsuarioTest();
-            contactoTest();
-            bitacoraTest(); 
-            recordatoriosTest();
-           Servicio.stopEntityManagerFactory();
+//            sistemaTest();
+//            UsuarioTest();
+//            contactoTest();
+//            bitacoraTest(); 
+//            recordatoriosTest();
+            Servicio.stopEntityManagerFactory();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -274,7 +293,7 @@ public class TesterMensajeria {
         AdjuntoDao adDao = new AdjuntoDao();
         adDao.setEm(em);
 
-        File file = new File("C:/Users/Nvidi/Pictures/Screenshots/tt.png");
+        File file = new File("C:/Users/Nvidi/Downloads/AdministracionPERT.pdf");
         byte[] fileContent = Files.readAllBytes(file.toPath());
         //Adjunto   \
 

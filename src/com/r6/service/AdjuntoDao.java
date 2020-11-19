@@ -23,23 +23,28 @@ public class AdjuntoDao implements Dao<Adjunto> {
 
     @Override
     public Optional<Adjunto> get(Integer id) {
-		Optional<Adjunto> adj=Optional.ofNullable((Adjunto)em.createNamedQuery("Adjunto.find").setParameter("idParam",id).
-				getSingleResult());
-		
-		return adj;
+        Optional<Adjunto> adj = Optional.ofNullable((Adjunto) em.createNamedQuery("Adjunto.find").setParameter("idParam", id).
+                getSingleResult());
+
+        return adj;
     }
 
     @Override
     public List<Adjunto> getAll() {
-		TypedQuery<Adjunto> AdjuntoList = em.createNamedQuery("Adjunto.findAll", Adjunto.class);
-		return AdjuntoList.getResultList();
+        TypedQuery<Adjunto> AdjuntoList = em.createNamedQuery("Adjunto.findAll", Adjunto.class);
+        return AdjuntoList.getResultList();
     }
 
     public List<Adjunto> getAllFiles() {
-		TypedQuery<Adjunto> AdjuntoList = em.createNamedQuery("Adjunto.findAllFiles", Adjunto.class);
-		return AdjuntoList.getResultList();
+        TypedQuery<Adjunto> AdjuntoList = em.createNamedQuery("Adjunto.findAllFiles", Adjunto.class);
+        return AdjuntoList.getResultList();
     }
-    
+
+    public List<Adjunto> getByMail(com.r6.mensajeria.Correo c) {
+        List<Adjunto>  returned = em.createNamedQuery("Adjunto.findByMail",Adjunto.class).setParameter("idMailParam",c.getId()).getResultList();
+        return returned;
+    }
+
     @Override
     public void save(Adjunto t) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -53,7 +58,6 @@ public class AdjuntoDao implements Dao<Adjunto> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-
     @Override
     public void delete(Adjunto t) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -66,6 +70,5 @@ public class AdjuntoDao implements Dao<Adjunto> {
     public static void setEm(EntityManager em) {
         AdjuntoDao.em = em;
     }
-    
-    
+
 }
