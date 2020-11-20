@@ -49,31 +49,30 @@ public class TesterMensajeria {
 
     public static void main(String[] args) {
         try {
-            
-            
+
             Servicio.setServerURL("jdbc:mysql://localhost:3306/mensajeria?serverTimezone=UTC");
             Servicio.setUsername("root");
-            Servicio.setPassword("123");
+            Servicio.setPassword("AsdF2013");
             Servicio.setHbm2DDLprotocol("update");
             Servicio.setDriver("com.mysql.jdbc.Driver");
             Servicio.setDialect("org.hibernate.dialect.MySQLDialect");
-            
+
             Servicio.startEntityManagerFactory();
             em = Servicio.getEm();
-            
-            //startEntityManagerFactory();
 
-           // Control prueba = new Control();
-           // prueba.setEm(em);
-           // prueba.controlCorreos();
-            
+            //startEntityManagerFactory();
+            // Control prueba = new Control();
+            // prueba.setEm(em);
+            // prueba.controlCorreos();
             //prueba.controlRecordatorios();
-            sistemaTest();
-            UsuarioTest();
-            contactoTest();
-            bitacoraTest(); 
+//            sistemaTest();
+//            UsuarioTest();
+//            contactoTest();
+//            bitacoraTest(); 
+//            recordatoriosTest();
             recordatoriosTest();
-           Servicio.stopEntityManagerFactory();
+
+            Servicio.stopEntityManagerFactory();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -83,7 +82,7 @@ public class TesterMensajeria {
     public static void poblarModelo() {
 
         //Colocar aqu� el directorio en que est� el archivo adjunto
-        String directorioAdjunto = "C:/Users/Lenovo/Desktop/tareas.txt";
+        String directorioAdjunto = "C:/Users/Daniel/Documents/Setup/setupMensajeria.txt";
         try {
             startEntityManagerFactory();
 
@@ -274,7 +273,7 @@ public class TesterMensajeria {
         AdjuntoDao adDao = new AdjuntoDao();
         adDao.setEm(em);
 
-        File file = new File("C:/Users/Nvidi/Pictures/Screenshots/tt.png");
+        File file = new File("C:/Users/Daniel/Documents/Setup/setupMensajeria.txt");
         byte[] fileContent = Files.readAllBytes(file.toPath());
         //Adjunto   \
 
@@ -568,14 +567,15 @@ public class TesterMensajeria {
         cal.add(Calendar.MONTH, 3);
         cal.add(Calendar.DAY_OF_MONTH, 1);
         Correo c = new Correo();
-        c.setAsunto(" Prueba con Recordatorios ");
+        c.setAsunto(" Prueba con Recordatorios Veces meses ");
         c.setCuerpo(" Esta es una prueba con recordatorios ");
         c.setFechaEnvio(cal.getTime());
         c.setTipo("HTML");
 
         /* Crear y enviar Correo 	*/
-        funtion.crearRecxMes(c, 2);
+//        funtion.crearRecxMes(c, 2);
         //Devuelve correos con recordatorios
+        funtion.crearRecxVez(c, 4, 3);
         funtion.getCorreoswRecordatorios();
 
         // Editar Correo por ID
