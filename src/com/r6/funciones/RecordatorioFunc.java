@@ -180,7 +180,7 @@ public class RecordatorioFunc {
 
             /* Se suma al calendario un mes cada vez que se repita el loop.*/
            
-                 calendar.set(Calendar.MONTH, calendar.getTime().getMonth() + mes);
+             calendar.set(Calendar.MONTH, calendar.getTime().getMonth() + 1);
           
            
         }
