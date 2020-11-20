@@ -139,7 +139,7 @@ public class RecordatorioFunc {
             cal.set(Calendar.DAY_OF_MONTH, ranDay);
             fecha = cal.getTime();
 
-            if (fecha.compareTo(today) == 0 || fecha.compareTo(today) < 0) {
+            if (fecha.compareTo(today) == 0 || fecha.compareTo(today) < 0 || fecha.getMonth() > cal.getTime().getMonth()) {
                 ranDay = (int) (Math.random() * (maxDays - 1 + 1) + 1);
                 allOk = false;
             } else {
