@@ -83,7 +83,7 @@ public class RecordatorioFunc {
         System.out.println(" ! Meses entre dia actual y la fecha meta " + mesesRestantes);
 
         /* Si el anno meta es mayor o igual que el anno actual*/
- /* Si la cantidad de veces propuestas es mayor a cero y si la cantidad de meses es mayor a 0*/
+        /* Si la cantidad de veces propuestas es mayor a cero y si la cantidad de meses es mayor a 0*/
         if (yearActual <= yearSend && veces > 0 && meses > 0) {
 
             /* Si la cantidad de meses es valida*/
