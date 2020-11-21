@@ -110,6 +110,12 @@ public class Correo implements Serializable {
     private String tipo;
 
     private String cuerpo;
+    
+    private int meses;
+    
+    private int veces;
+    
+    private int frecuencia;
 
     private Boolean inifinito;
 
@@ -118,8 +124,6 @@ public class Correo implements Serializable {
 
     ;
     
-    
-
     //<editor-fold defaultstate="collapsed" desc="Getters y Setters">
     public Set<Contacto> getDestinatarios() {
         return destinatarios;
@@ -221,5 +225,31 @@ public class Correo implements Serializable {
         this.cuerpo = cuerpo;
     }
 
+       public int getMeses() {
+        return meses;
+    }
+
+    public void setMeses(int meses) {
+        this.meses = meses;
+    }
+
+    public int getVeces() {
+        return veces;
+    }
+
+    public void setVeces(int veces) {
+        this.veces = veces;
+    }
+
+    public int getFrecuencia() {
+        return frecuencia;
+    }
+
+    public void setFrecuencia(int frecuencia) {
+        this.frecuencia = frecuencia;
+    }
+     
     //</editor-fold>
+
+ 
 }
