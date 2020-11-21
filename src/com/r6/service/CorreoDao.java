@@ -8,6 +8,8 @@ package com.r6.service;
 import com.r6.mensajeria.Bitacora;
 import com.r6.mensajeria.Correo;
 import com.r6.mensajeria.Recordatorio;
+import com.r6.mensajeria.Sistema;
+import com.r6.mensajeria.Usuario;
 import java.util.List;
 import java.util.Optional;
 import javax.persistence.EntityManager;
@@ -31,6 +33,11 @@ public class CorreoDao implements Dao<Correo> {
 
     public Correo getById(int id) {
         return em.getReference(Correo.class, id);
+    }
+    
+    public List<Correo> getByUserAndSys(Usuario u , Sistema s){
+        List<Correo> returned = em.createNamedQuery("Correo.findByUserAndSys",Correo.class).setParameter("idUserParam", u.getIdUsuario()).setParameter("idSysParam", s.getIdSistema()).getResultList();
+        return returned;
     }
 
     @Override

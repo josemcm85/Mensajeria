@@ -64,6 +64,28 @@ public class TesterMensajeria {
             // Control prueba = new Control();
             // prueba.setEm(em);
             // prueba.controlCorreos();
+            Dao daoM = new UsuarioDao();
+            ((UsuarioDao) daoM).setEm(em);
+
+            Usuario u = (Usuario) ((UsuarioDao) daoM).get(new Integer(1)).get();
+
+            daoM = new SistemaDao();
+            ((SistemaDao) daoM).setEm(em);
+            Sistema s = (Sistema) ((SistemaDao) daoM).get(new Integer(1)).get();
+
+            CorreoDao cDao = new CorreoDao();
+            cDao.setEm(em);
+
+            for (Correo c : cDao.getByUserAndSys(u, s)) {
+                System.out.println("Correo : " + c.getId());
+                daoM = new AdjuntoDao();
+                ((AdjuntoDao) daoM).setEm(em);
+                for (Adjunto ad : (List<Adjunto>) ((AdjuntoDao) daoM).getByMail(c)) {
+                    System.out.println("Adjunto : " + ad.getId() + " * Archivo * " + ad.getArchivo().toString());
+                }
+            }
+
+
             //prueba.controlRecordatorios();
 //            sistemaTest();
 //            UsuarioTest();

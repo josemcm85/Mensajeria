@@ -29,7 +29,11 @@ import org.hibernate.annotations.Type;
 			query="SELECT a FROM Adjunto a WHERE a.id = :idParam"),
 		@NamedQuery(
 			name="Adjunto.findAll",
-			query="SELECT a FROM Adjunto a ORDER BY a.id")
+			query="SELECT a FROM Adjunto a ORDER BY a.id"),
+                @NamedQuery(
+                        name = "Adjunto.findByMail",
+                        query = "SELECT A from Adjunto a INNER JOIN A.correos AS AC WHERE AC.id = :idMailParam"
+                )
 	
 })
 public class Adjunto implements Serializable {
