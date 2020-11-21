@@ -56,6 +56,7 @@ public class CorreoFunc {
 
     public void crearRecxMes(Correo correo, int mes) {
         try {
+            correo.setMeses(mes);
             this.saveCorreo(correo);
             funcion.testMeses(correo, mes);
         } catch (Exception e) {
@@ -66,6 +67,8 @@ public class CorreoFunc {
 
     public void crearRecxVez(Correo correo, int veces, int mes) {
         try {
+            correo.setVeces(veces);
+            correo.setMeses(mes);
             this.saveCorreo(correo);
             funcion.testVecesxMes(correo, veces, mes);
         } catch (Exception e) {
@@ -76,6 +79,9 @@ public class CorreoFunc {
 
     public void crearRecxFrecuencia(Correo correo, int veces, int mes, int frecuencia) {
         try {
+            correo.setVeces(veces);
+            correo.setMeses(mes);
+            correo.setFrecuencia(frecuencia);
             this.saveCorreo(correo);
             funcion.testerMesesXFrecuencia(correo, veces, mes, frecuencia);
         } catch (Exception e) {
