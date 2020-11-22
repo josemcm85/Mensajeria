@@ -16,6 +16,7 @@ import com.r6.mensajeria.Correo;
 import com.r6.mensajeria.Recordatorio;
 import com.r6.service.CorreoDao;
 import com.r6.service.RecordatorioDao;
+import java.time.YearMonth;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.IntStream;
@@ -27,13 +28,13 @@ public class RecordatorioFunc {
     Calendar calendar = Calendar.getInstance();
     RecordatorioDao dao = new RecordatorioDao();
     CorreoDao daoCorreo = new CorreoDao();
-     private static EntityManager em = null;
-     
+    private static EntityManager em = null;
+
     public void setRecorDao(RecordatorioDao dao) {
         this.dao = dao;
     }
-    
-     public void setEm(EntityManager emNew) {
+
+    public void setEm(EntityManager emNew) {
         em = emNew;
         daoCorreo.setEm(emNew);
         dao.setEm(emNew);
@@ -42,9 +43,6 @@ public class RecordatorioFunc {
     public EntityManager getEm() {
         return em;
     }
-    
-    
-    
 
     /*                     !-- Seccion veces/meses-- !                    */
  /* Funcion cuando el usuario define la veces en que quiere una notificacion 
@@ -85,14 +83,14 @@ public class RecordatorioFunc {
         System.out.println(" ! Meses entre dia actual y la fecha meta " + mesesRestantes);
 
         /* Si el anno meta es mayor o igual que el anno actual*/
- /* Si la cantidad de veces propuestas es mayor a cero y si la cantidad de meses es mayor a 0*/
+        /* Si la cantidad de veces propuestas es mayor a cero y si la cantidad de meses es mayor a 0*/
         if (yearActual <= yearSend && veces > 0 && meses > 0) {
 
             /* Si la cantidad de meses es valida*/
             if (meses <= mesesRestantes) {
 
                 /* Si la cantidad de veces que se puede avisar es factble (Por dias restantes)*/
-                if (veces <= diasRestantes) {
+                if (this.checkMonthAv(today, correo.getFechaEnvio(), veces, meses)) {
 
                     /* Si las veces no exceden el limite de dias estandar por mes*/
                     if (veces <= 31) {
@@ -141,7 +139,7 @@ public class RecordatorioFunc {
             cal.set(Calendar.DAY_OF_MONTH, ranDay);
             fecha = cal.getTime();
 
-            if (fecha.compareTo(today) == 0 || fecha.compareTo(today) < 0) {
+            if (fecha.compareTo(today) == 0 || fecha.compareTo(today) < 0 || fecha.getMonth() > cal.getTime().getMonth()) {
                 ranDay = (int) (Math.random() * (maxDays - 1 + 1) + 1);
                 allOk = false;
             } else {
@@ -161,7 +159,7 @@ public class RecordatorioFunc {
     public List<Date> dayListGen(Calendar calendar, int veces, int meses) {
         List<Date> dias = new ArrayList<>();
         /* Por cada mes se generan X veces de fechas random*/
-        for (int mes = 0; mes < meses; mes++) {
+        for (int mes = 1; mes <= meses; mes++) {
 
             for (int vez = 0; vez < veces; vez++) {
 
@@ -177,13 +175,14 @@ public class RecordatorioFunc {
                     }
                 } while (!notRepeated);
 
-                /* Funcional
-                dias.add(randomDatePicker(calendar));
-                 */
+               
             }
 
             /* Se suma al calendario un mes cada vez que se repita el loop.*/
-            calendar.set(Calendar.MONTH, calendar.getTime().getMonth() + mes);
+           
+             calendar.set(Calendar.MONTH, calendar.getTime().getMonth() + 1);
+          
+           
         }
 
         return dias;
@@ -470,11 +469,11 @@ public class RecordatorioFunc {
             Correo correo = daoCorreo.getById(rec.getCorreo().getId());
             Date now = new Date();
 
-            if (fechaEnvio.compareTo(now) > 0 && correo.getFechaEnvio().compareTo(fechaEnvio) > 0 ) {
+            if (fechaEnvio.compareTo(now) > 0 && correo.getFechaEnvio().compareTo(fechaEnvio) > 0) {
                 rec.setEstado(estado);
                 rec.setFechaEnvio(fechaEnvio);
                 dao.update(rec);
-            }else{
+            } else {
                 System.out.println("Error: Fecha no valdia! \n");
             }
 
@@ -483,10 +482,40 @@ public class RecordatorioFunc {
         }
 
     }
-    
-    
-    
-    public void deleteRecordatorio(int target){
+
+    public void deleteRecordatorio(int target) {
         dao.delete(dao.getById(target));
+    }
+
+    public boolean checkMonthAv(Date fechaActual, Date fechaMeta, int veces, int meses) {
+        boolean allOk = true;
+        YearMonth yearMonthObject = null;
+        int daysInMonth =0;
+        
+        yearMonthObject = YearMonth.of(fechaActual.getYear(), fechaActual.getMonth());
+        daysInMonth = yearMonthObject.lengthOfMonth();
+        
+        /* Si las veces caben en el primer mes se ejecuta el resto de checks*/
+        if(veces <= daysInMonth ){
+            
+        Calendar cal = new GregorianCalendar();
+        cal.setTime(fechaActual);
+         
+        for(int i=1; i < meses ; i++){
+         cal.add(Calendar.MONTH, cal.getTime().getMonth()+i);
+         yearMonthObject = YearMonth.of(cal.getTime().getYear(),cal.getTime().getMonth());
+         daysInMonth = yearMonthObject.lengthOfMonth();
+         
+            if(veces > daysInMonth){
+                allOk=false;
+            }
+        }
+        
+        }else{
+            allOk = false;
+        }
+        
+        
+        return allOk;
     }
 }
