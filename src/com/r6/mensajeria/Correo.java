@@ -25,7 +25,7 @@ import org.hibernate.annotations.GenericGenerator;
             query = "SELECT c FROM Correo c"),
     @NamedQuery(
             name = "Correo.findByUserAndSys",
-            query = "SELECT DISTINCT AC from Adjunto a INNER JOIN A.correos AS AC INNER JOIN AC.usuarios as ACU INNER JOIN ACU.sistema as ACUA  WHERE ACU.idUsuario = :idUserParam AND ACUA.idSistema =:idSysParam")
+            query = "SELECT DISTINCT AC from Adjunto a INNER JOIN A.correos AS AC INNER JOIN AC.usuarios as ACU INNER JOIN ACU.sistema as ACUA  WHERE ACU = :mailUserParam AND ACUA.idSistema =:idSysParam")
 
 })
 

@@ -36,7 +36,7 @@ public class CorreoDao implements Dao<Correo> {
     }
     
     public List<Correo> getByUserAndSys(Usuario u , Sistema s){
-        List<Correo> returned = em.createNamedQuery("Correo.findByUserAndSys",Correo.class).setParameter("idUserParam", u.getIdUsuario()).setParameter("idSysParam", s.getIdSistema()).getResultList();
+        List<Correo> returned = em.createNamedQuery("Correo.findByUserAndSys",Correo.class).setParameter("mailUserParam", u.getCorreo()).setParameter("idSysParam", s.getIdSistema()).getResultList();
         return returned;
     }
 

@@ -19,7 +19,11 @@ import org.hibernate.annotations.GenericGenerator;
 			query="SELECT s FROM Sistema s WHERE s.idSistema = :idParam"),
 		@NamedQuery(
 			name="Sistema.findAll",
-			query="SELECT s FROM Sistema s ORDER BY s.idSistema")
+			query="SELECT s FROM Sistema s ORDER BY s.idSistema"),
+                @NamedQuery(
+                        name="Sistema.findByUser",
+                        query="SELECT DISTINCT s FROM Sistema AS s INNER JOIN S.usuarios AS su WHERE su.correo = :emailUserParam"
+                )
 	
 })
 
