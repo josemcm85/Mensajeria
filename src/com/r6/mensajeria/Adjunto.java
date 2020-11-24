@@ -54,7 +54,7 @@ public class Adjunto implements Serializable {
    @Type(type="org.hibernate.type.MaterializedBlobType")
    private byte[] archivo;
    
-   public Adjunto(){};
+
    
     public Integer getId() {
         return id;

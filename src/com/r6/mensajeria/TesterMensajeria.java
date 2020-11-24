@@ -48,11 +48,12 @@ public class TesterMensajeria {
     private static Scanner scan = new Scanner(System.in);
 
     public static void main(String[] args) {
-        try {
+     
+    	try {
 
             Servicio.setServerURL("jdbc:mysql://localhost:3306/mensajeria?serverTimezone=UTC");
             Servicio.setUsername("root");
-            Servicio.setPassword("Leiasuri85");
+            Servicio.setPassword("wvjjk611");
             Servicio.setHbm2DDLprotocol("update");
             Servicio.setDriver("com.mysql.jdbc.Driver");
             Servicio.setDialect("org.hibernate.dialect.MySQLDialect");
@@ -72,34 +73,29 @@ public class TesterMensajeria {
             //((UsuarioDao) daoM).setEm(em);
             //Usuario u = (Usuario) ((UsuarioDao) daoM).get(new Integer(1)).get();
             
-            Sistema sis=null;
-            Usuario us=null;
             
-            SistemaDao sisDao = new SistemaDao(em);
-            for(Sistema s: sisDao.getAll()) {
-            	if(s.getNombre().equals("Contabilidad")) {
-            		sis = s;
-            	}
-            	
-            }
-            
-            UsuarioDao usDao = new UsuarioDao(em);
-            for(Usuario u: usDao.getAll()) {
-            	if(u.getCorreo().equals("ventasestructurasulatina@gmail.com")) {
-            		us = u;
-            	}
-            	
-            }
 
+            AdjuntoDao adDao = new AdjuntoDao();
+            adDao.setEm(Servicio.getEm());
 
-            CorreoDao cDao = new CorreoDao();
-            cDao.setEm(em);
+            String directorioAdjunto = "C:/Users/Lenovo/Desktop/s2.pdf";
+            String directorioAdjunto2 = "C:/Users/Lenovo/Desktop/prueba.docx";
+            File file = new File(directorioAdjunto);
+            File file2 = new File(directorioAdjunto2);
 
-            for (Correo c : cDao.getByUserAndSys(us, sis)) {
-                System.out.println("Correo : " + c.getId());
-               
-            }
+            byte[] fileContent = Files.readAllBytes(file.toPath());
+            byte[] fileContent2 = Files.readAllBytes(file2.toPath());
 
+            //Adjunto   \
+            //List<File> files  = new ArrayList<>();
+            Adjunto adj = new Adjunto();
+            adj.setArchivo(fileContent);
+
+            Adjunto adj2 = new Adjunto();
+            adj2.setArchivo(fileContent2);
+
+            adDao.save(adj);
+            adDao.save(adj2);
 
             //prueba.controlRecordatorios();
 //            sistemaTest();
@@ -114,9 +110,13 @@ public class TesterMensajeria {
             e.printStackTrace();
         }
 
+
+
     }
 
     public static void poblarModelo() {
+    	
+    	/*
 
         //Colocar aqu� el directorio en que est� el archivo adjunto
         String directorioAdjunto = "C:/Users/Daniel/Documents/Setup/setupMensajeria.txt";
@@ -300,10 +300,12 @@ public class TesterMensajeria {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        
+        */
     }
 
     public static void bitacoraTest() throws IOException {
-
+/*
         BitacoraDao dao = new BitacoraDao();
         dao.setEm(em);
 
@@ -424,10 +426,12 @@ public class TesterMensajeria {
                 System.out.println("ADJ: " + ad.getArchivo().toString());
             }
         }
+        
+        */
     }
 
     public static void contactoTest() {
-
+/*
         //Inicializacion del DAO
         ContactoDao contDao = new ContactoDao();
         contDao.setEm(em);
@@ -491,11 +495,12 @@ public class TesterMensajeria {
         for (Contacto c : contDao.getAll()) {
             System.out.println(c.getNombre() + "-" + c.getCorreo() + c.getSuscriptor().toString());
         }
-
+*/
     }
 
     public static void sistemaTest() {
-        SistemaDao sisDao = new SistemaDao(em);
+    	
+        //SistemaDao sisDao = new SistemaDao(em);
 
         //GUARDAR
         /*
@@ -534,11 +539,13 @@ public class TesterMensajeria {
         Optional<Sistema> sistDis =sisDao.get(new Integer(1));
         sisDao.EnableDisable(sistDis.get());
          */
+    	
+    	
     }
 
     public static void UsuarioTest() {
 
-        UsuarioDao usDao = new UsuarioDao(em);
+      //  UsuarioDao usDao = new UsuarioDao(em);
 
         //GUARDAR
         //Orden para crear usuario (Integer idSistema, String correo, String contrasenia, Boolean admin, Boolean superUser, Boolean activo)
@@ -592,7 +599,7 @@ public class TesterMensajeria {
     }
 
     public static void recordatoriosTest() {
-
+  /*
         CorreoFunc funtion = new CorreoFunc();
         RecordatorioFunc recFuntion = new RecordatorioFunc();
         funtion.setEm(em);
@@ -608,12 +615,12 @@ public class TesterMensajeria {
         c.setCuerpo(" Esta es una prueba con recordatorios ");
         c.setFechaEnvio(cal.getTime());
         c.setTipo("HTML");
-
+*/
         /* Crear y enviar Correo 	*/
 //        funtion.crearRecxMes(c, 2);
         //Devuelve correos con recordatorios
-        funtion.crearRecxVez(c, 4, 3);
-        funtion.getCorreoswRecordatorios();
+      //  funtion.crearRecxVez(c, 4, 3);
+      //  funtion.getCorreoswRecordatorios();
 
         // Editar Correo por ID
         //funtion.editarCorreo(1, "Correo Edit", "Correo Edit", true, cal.getTime(),"HTML");
@@ -627,7 +634,7 @@ public class TesterMensajeria {
          recFuntion.deleteRecordatorio(1);
          */
     }
-
+/*
     public static void startEntityManagerFactory() {
         if (entityManagerFactory == null) {
             try {
@@ -653,5 +660,5 @@ public class TesterMensajeria {
             entityManagerFactory = null;
         }
     }
-
+*/
 }
