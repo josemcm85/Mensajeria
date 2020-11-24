@@ -52,7 +52,7 @@ public class TesterMensajeria {
 
             Servicio.setServerURL("jdbc:mysql://localhost:3306/mensajeria?serverTimezone=UTC");
             Servicio.setUsername("root");
-            Servicio.setPassword("AsdF2013");
+            Servicio.setPassword("Leiasuri85");
             Servicio.setHbm2DDLprotocol("update");
             Servicio.setDriver("com.mysql.jdbc.Driver");
             Servicio.setDialect("org.hibernate.dialect.MySQLDialect");
@@ -64,25 +64,40 @@ public class TesterMensajeria {
             // Control prueba = new Control();
             // prueba.setEm(em);
             // prueba.controlCorreos();
-            Dao daoM = new UsuarioDao();
-            ((UsuarioDao) daoM).setEm(em);
 
-            Usuario u = (Usuario) ((UsuarioDao) daoM).get(new Integer(1)).get();
+            //daoM = new SistemaDao();
+            //((SistemaDao) daoM).setEm(em);
+            //Sistema s = (Sistema) ((SistemaDao) daoM).get(new Integer(1)).get();
+            //Dao daoM = new UsuarioDao();
+            //((UsuarioDao) daoM).setEm(em);
+            //Usuario u = (Usuario) ((UsuarioDao) daoM).get(new Integer(1)).get();
+            
+            Sistema sis=null;
+            Usuario us=null;
+            
+            SistemaDao sisDao = new SistemaDao(em);
+            for(Sistema s: sisDao.getAll()) {
+            	if(s.getNombre().equals("Contabilidad")) {
+            		sis = s;
+            	}
+            	
+            }
+            
+            UsuarioDao usDao = new UsuarioDao(em);
+            for(Usuario u: usDao.getAll()) {
+            	if(u.getCorreo().equals("ventasestructurasulatina@gmail.com")) {
+            		us = u;
+            	}
+            	
+            }
 
-            daoM = new SistemaDao();
-            ((SistemaDao) daoM).setEm(em);
-            Sistema s = (Sistema) ((SistemaDao) daoM).get(new Integer(1)).get();
 
             CorreoDao cDao = new CorreoDao();
             cDao.setEm(em);
 
-            for (Correo c : cDao.getByUserAndSys(u, s)) {
+            for (Correo c : cDao.getByUserAndSys(us, sis)) {
                 System.out.println("Correo : " + c.getId());
-                daoM = new AdjuntoDao();
-                ((AdjuntoDao) daoM).setEm(em);
-                for (Adjunto ad : (List<Adjunto>) ((AdjuntoDao) daoM).getByMail(c)) {
-                    System.out.println("Adjunto : " + ad.getId() + " * Archivo * " + ad.getArchivo().toString());
-                }
+               
             }
 
 
@@ -92,7 +107,7 @@ public class TesterMensajeria {
 //            contactoTest();
 //            bitacoraTest(); 
 //            recordatoriosTest();
-            recordatoriosTest();
+           // recordatoriosTest();
 
             Servicio.stopEntityManagerFactory();
         } catch (Exception e) {
