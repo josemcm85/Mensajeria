@@ -8,7 +8,15 @@
   	<class>com.r6.mensajeria.Recordatorio</class>
   	<class>com.r6.mensajeria.Sistema</class>
   	<class>com.r6.mensajeria.Usuario</class>
-
+	<class>com.r6.mensajeria.Cliente</class>
+	<class>com.r6.mensajeria.Compannia</class>
+	<class>com.r6.mensajeria.Hardware</class>
+	<class>com.r6.mensajeria.Individuo</class>
+	<class>com.r6.mensajeria.Itemorden</class>
+	<class>com.r6.mensajeria.Manual</class>
+	<class>com.r6.mensajeria.Orden</class>
+	<class>com.r6.mensajeria.Producto</class>
+	<class>com.r6.mensajeria.Software</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/mensajeria?serverTimezone=UTC"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

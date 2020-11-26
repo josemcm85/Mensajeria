@@ -32,7 +32,7 @@ import org.hibernate.annotations.GenericGenerator;
     ,
         @NamedQuery(name = "Bitacora.findByDateRange", query = "Select t from Bitacora t where t.fechaEnvio BETWEEN :fIniParam AND :fFinParam order by T.fechaEnvio ASC")
 })
-public class Bitacora {
+public class Bitacora  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
