@@ -17,7 +17,16 @@
 			<attribute name="owner.project.facets" value="jpt.jpa"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="E:/U/Cuatri 3-2020/Componentes/LIBRERIAS/javax.mail.jar"/>
-	<classpathentry kind="lib" path="E:/U/Cuatri 3-2020/Componentes/LIBRERIAS/swing-worker.jar"/>
+	<classpathentry kind="lib" path="E:/diseno de componentes/LIBRERIAS-20201020T231339Z-001/LIBRERIAS/hibernate_libs/hibernate_libs/antlr-2.7.6.jar"/>
+	<classpathentry kind="lib" path="E:/diseno de componentes/LIBRERIAS-20201020T231339Z-001/LIBRERIAS/hibernate_libs/hibernate_libs/cglib-2.2.jar"/>
+	<classpathentry kind="lib" path="E:/diseno de componentes/LIBRERIAS-20201020T231339Z-001/LIBRERIAS/hibernate_libs/hibernate_libs/commons-collections-3.1.jar"/>
+	<classpathentry kind="lib" path="E:/diseno de componentes/LIBRERIAS-20201020T231339Z-001/LIBRERIAS/hibernate_libs/hibernate_libs/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="E:/diseno de componentes/LIBRERIAS-20201020T231339Z-001/LIBRERIAS/hibernate_libs/hibernate_libs/hibernate3.jar"/>
+	<classpathentry kind="lib" path="E:/diseno de componentes/LIBRERIAS-20201020T231339Z-001/LIBRERIAS/hibernate_libs/hibernate_libs/hibernate-jpa-2.0-api-1.0.0.Final.jar"/>
+	<classpathentry kind="lib" path="E:/diseno de componentes/LIBRERIAS-20201020T231339Z-001/LIBRERIAS/hibernate_libs/hibernate_libs/javassist-3.12.0.GA.jar"/>
+	<classpathentry kind="lib" path="E:/diseno de componentes/LIBRERIAS-20201020T231339Z-001/LIBRERIAS/hibernate_libs/hibernate_libs/jta-1.1.jar"/>
+	<classpathentry kind="lib" path="E:/diseno de componentes/LIBRERIAS-20201020T231339Z-001/LIBRERIAS/hibernate_libs/hibernate_libs/slf4j-api-1.6.1.jar"/>
+	<classpathentry kind="lib" path="E:/diseno de componentes/LIBRERIAS-20201020T231339Z-001/LIBRERIAS/swing-worker.jar/swing-worker.jar"/>
+	<classpathentry kind="lib" path="E:/diseno de componentes/LIBRERIAS-20201020T231339Z-001/LIBRERIAS/javamail1_4_5/javamail1_4_5/javamail-1.4.5/mail.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
