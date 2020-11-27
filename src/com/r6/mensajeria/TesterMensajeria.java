@@ -35,6 +35,10 @@ import com.r6.service.SistemaDao;
 import com.r6.service.CorreoDao;
 import com.r6.service.UsuarioDao;
 import com.r6.funciones.RecordatorioFunc;
+import com.r6.service.ClienteDao;
+import com.r6.service.CompanniaDao;
+import com.r6.service.IndividuoDao;
+import com.r6.service.OrdenDao;
 import com.r6.service.Servicio;
 
 /**
@@ -48,12 +52,12 @@ public class TesterMensajeria {
     private static Scanner scan = new Scanner(System.in);
 
     public static void main(String[] args) {
-     
-    	try {
+
+        try {
 
             Servicio.setServerURL("jdbc:mysql://localhost:3306/mensajeria?serverTimezone=UTC");
             Servicio.setUsername("root");
-            Servicio.setPassword("wvjjk611");
+            Servicio.setPassword("123");
             Servicio.setHbm2DDLprotocol("create");
             Servicio.setDriver("com.mysql.jdbc.Driver");
             Servicio.setDialect("org.hibernate.dialect.MySQLDialect");
@@ -65,58 +69,220 @@ public class TesterMensajeria {
             // Control prueba = new Control();
             // prueba.setEm(em);
             // prueba.controlCorreos();
-
             //daoM = new SistemaDao();
             //((SistemaDao) daoM).setEm(em);
             //Sistema s = (Sistema) ((SistemaDao) daoM).get(new Integer(1)).get();
             //Dao daoM = new UsuarioDao();
             //((UsuarioDao) daoM).setEm(em);
             //Usuario u = (Usuario) ((UsuarioDao) daoM).get(new Integer(1)).get();
-            
-            
-
-            AdjuntoDao adDao = new AdjuntoDao();
-            adDao.setEm(Servicio.getEm());
-
-            String directorioAdjunto = "C:/Users/Lenovo/Desktop/s2.pdf";
-            String directorioAdjunto2 = "C:/Users/Lenovo/Desktop/prueba.docx";
-            File file = new File(directorioAdjunto);
-            File file2 = new File(directorioAdjunto2);
-
-            byte[] fileContent = Files.readAllBytes(file.toPath());
-            byte[] fileContent2 = Files.readAllBytes(file2.toPath());
-
-            //Adjunto   \
-            //List<File> files  = new ArrayList<>();
-            Adjunto adj = new Adjunto();
-            adj.setArchivo(fileContent);
-
-            Adjunto adj2 = new Adjunto();
-            adj2.setArchivo(fileContent2);
-
-            adDao.save(adj);
-            adDao.save(adj2);
-
+//            AdjuntoDao adDao = new AdjuntoDao();
+//            adDao.setEm(Servicio.getEm());
+//            
+//            String directorioAdjunto = "C:/Users/Nvidi/Documents/AA.docx";
+//            String directorioAdjunto2 = "C:/Users/Nvidi/Documents/AB.docx";
+//            File file = new File(directorioAdjunto);
+//            File file2 = new File(directorioAdjunto2);
+//            
+//            byte[] fileContent = Files.readAllBytes(file.toPath());
+//            byte[] fileContent2 = Files.readAllBytes(file2.toPath());
+//
+//            //Adjunto   \
+//            //List<File> files  = new ArrayList<>();
+//            Adjunto adj = new Adjunto();
+//            adj.setArchivo(fileContent);
+//            
+//            Adjunto adj2 = new Adjunto();
+//            adj2.setArchivo(fileContent2);
+//            
+//            adDao.save(adj);
+//            adDao.save(adj2);
             //prueba.controlRecordatorios();
 //            sistemaTest();
 //            UsuarioTest();
 //            contactoTest();
 //            bitacoraTest(); 
 //            recordatoriosTest();
-           // recordatoriosTest();
+            // recordatoriosTest();
+             nuevosDaosGCTest();
 
             Servicio.stopEntityManagerFactory();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+    }
 
+    public static void nuevosDaosGCTest() {
+        
+        //Se testean los siguientes DAOS : Cliente, individuo,Compania,orden,itemorden
+        
+        Dao masterDao = new ClienteDao();
+        ((ClienteDao) masterDao).setEm(Servicio.getEm());
 
+        //Modelos para los Clientes
+        Cliente c1 = new Cliente();
+        Cliente c2 = new Cliente();
+
+        c1.setNombre("Cliente 1");
+        c1.setDireccion("orem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+        c1.setTipo(2);
+        c1.setTelefono("6544654");
+
+        c2.setNombre("Cliente 2");
+        c2.setDireccion("orem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+        c2.setTipo(1);
+        c2.setTelefono("6846464");
+
+        //Guardado de clientes
+        ((ClienteDao) masterDao).save(c1);
+        ((ClienteDao) masterDao).save(c2);
+
+        //Consultas de clientes
+        System.out.println("-Consulta de clientes-");
+        for (Cliente c : ((ClienteDao) masterDao).getAll()) {
+            System.out.println("Cliente: " + c.getIdCliente() + " " + c.getNombre() + " " + c.getDireccion() + " " + c.getTelefono());
+        }
+        System.out.println("");
+
+        //Modelos para los individuos
+        Individuo per1 = new Individuo();
+        Individuo per2 = new Individuo();
+        Individuo per3 = new Individuo();
+
+        per1.setNumeroLic("NJDKAI-32");
+        per1.setCliente(c1);
+
+        per2.setNumeroLic("JKADHS-22");
+        per2.setCliente(c1);
+
+        per3.setNumeroLic("DSFSDF-65");
+        per3.setCliente(c2);
+
+        masterDao = new IndividuoDao();
+        ((IndividuoDao) masterDao).setEm(Servicio.getEm());
+
+        //Insercion de individuos
+        ((IndividuoDao) masterDao).save(per1);
+        ((IndividuoDao) masterDao).save(per2);
+        ((IndividuoDao) masterDao).save(per3);
+
+        System.out.println("Consulta de individuos");
+        //Consultas de individuos
+        for (Individuo ind : ((IndividuoDao) masterDao).getAll()) {
+            System.out.println("Individuo: " + ind.getIdIndividuo() + " " + ind.getCliente().getNombre() + " " + ind.getNumeroLic());
+        }
+        System.out.println("");
+
+        //Modelos para las companias
+        Compannia comp1 = new Compannia();
+        Compannia comp2 = new Compannia();
+        Compannia comp3 = new Compannia();
+
+        comp1.setCliente(c2);
+        comp1.setContacto("82938298");
+        comp1.setDescuento(10);
+
+        comp2.setCliente(c2);
+        comp2.setContacto("34655454");
+        comp2.setDescuento(10);
+
+        comp3.setCliente(c1);
+        comp3.setContacto("56457354");
+        comp3.setDescuento(15);
+
+        //Insercion de companias
+        masterDao = new CompanniaDao();
+        ((CompanniaDao) masterDao).setEm(Servicio.getEm());
+
+        ((CompanniaDao) masterDao).save(comp1);
+        ((CompanniaDao) masterDao).save(comp2);
+        ((CompanniaDao) masterDao).save(comp3);
+
+        System.out.println("Consulta de compannias");
+        //Consultas de companias
+        for (Compannia comp : ((CompanniaDao) masterDao).getAll()) {
+            System.out.println("Compania: " + comp.getIdCompannia() + " " + comp.getDescuento() + " " + comp.getCliente().getNombre());
+        }
+        System.out.println("");
+
+        //Modelos para las ordenes
+        Orden ord1 = new Orden();
+        Orden ord2 = new Orden();
+        Orden ord3 = new Orden();
+        Orden ord4 = new Orden();
+        Orden ord5 = new Orden();
+
+        ord1.setCliente(c1);
+        ord1.setFechaOrden(Calendar.getInstance().getTime());
+        ord1.setTotalOrden(108.9);
+
+        ord2.setCliente(c1);
+        ord2.setFechaOrden(Calendar.getInstance().getTime());
+        ord2.setTotalOrden(208.9);
+
+        ord3.setCliente(c2);
+        ord3.setFechaOrden(Calendar.getInstance().getTime());
+        ord3.setTotalOrden(308.9);
+
+        ord4.setCliente(c2);
+        ord4.setFechaOrden(Calendar.getInstance().getTime());
+        ord4.setTotalOrden(408.9);
+
+        ord5.setCliente(c2);
+        ord5.setFechaOrden(Calendar.getInstance().getTime());
+        ord5.setTotalOrden(508.9);
+        
+        //Insercion de ordenes
+        masterDao  = new OrdenDao();
+        ((OrdenDao)masterDao).setEm(Servicio.getEm());
+        
+        ((OrdenDao)masterDao).save(ord1);
+        ((OrdenDao)masterDao).save(ord2);
+        ((OrdenDao)masterDao).save(ord3);
+        ((OrdenDao)masterDao).save(ord4);
+        ((OrdenDao)masterDao).save(ord5);
+        
+        System.out.println("Consultas de ordenes");
+        //Consultas de ordenes
+        for(Orden ord: ((OrdenDao)masterDao).getAll()){
+            System.out.println("Orden : "+ord.getCliente().getNombre()+" "+ord.getIdOrden()+" "+ord.getTotalOrden()+" "+ord.getFechaOrden());
+        }
+        
+//        //Modelos de productos
+//        Producto prod1 = new  Producto();
+//        Producto prod2 = new  Producto();
+//        Producto prod3 = new  Producto();
+//        
+//        prod1.setDescripcion("orem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+//        
+//        
+//        
+//        //Modelos de itemorden
+//        Itemorden iord1 = new Itemorden();
+//        Itemorden iord2 = new Itemorden();
+//        Itemorden iord3 = new Itemorden();
+//        
+//        iord1.setCantidad(2);
+//        iord1.setImpuesto(new Double(13));
+//        iord1.setNumLinea(1);
+//        iord1.setPrecioUnitario(new Double(5));
+//        iord1.setTotalItem(new Double(10));
+//        iord1.setOrden(ord1);
+//
+//        iord2.setImpuesto(new Double(13));
+//        iord2.setNumLinea(1);
+//        iord2.setPrecioUnitario(new Double(5));
+//        iord2.setTotalItem(new Double(10));
+//        iord2.setOrden(ord1);
+        
+        
+        
+        
     }
 
     public static void poblarModelo() {
-    	
-    	/*
+
+        /*
 
         //Colocar aqu� el directorio en que est� el archivo adjunto
         String directorioAdjunto = "C:/Users/Daniel/Documents/Setup/setupMensajeria.txt";
@@ -301,11 +467,11 @@ public class TesterMensajeria {
             e.printStackTrace();
         }
         
-        */
+         */
     }
 
     public static void bitacoraTest() throws IOException {
-/*
+        /*
         BitacoraDao dao = new BitacoraDao();
         dao.setEm(em);
 
@@ -427,11 +593,11 @@ public class TesterMensajeria {
             }
         }
         
-        */
+         */
     }
 
     public static void contactoTest() {
-/*
+        /*
         //Inicializacion del DAO
         ContactoDao contDao = new ContactoDao();
         contDao.setEm(em);
@@ -495,13 +661,12 @@ public class TesterMensajeria {
         for (Contacto c : contDao.getAll()) {
             System.out.println(c.getNombre() + "-" + c.getCorreo() + c.getSuscriptor().toString());
         }
-*/
+         */
     }
 
     public static void sistemaTest() {
-    	
-        //SistemaDao sisDao = new SistemaDao(em);
 
+        //SistemaDao sisDao = new SistemaDao(em);
         //GUARDAR
         /*
         Sistema sistema =new Sistema();
@@ -539,14 +704,11 @@ public class TesterMensajeria {
         Optional<Sistema> sistDis =sisDao.get(new Integer(1));
         sisDao.EnableDisable(sistDis.get());
          */
-    	
-    	
     }
 
     public static void UsuarioTest() {
 
-      //  UsuarioDao usDao = new UsuarioDao(em);
-
+        //  UsuarioDao usDao = new UsuarioDao(em);
         //GUARDAR
         //Orden para crear usuario (Integer idSistema, String correo, String contrasenia, Boolean admin, Boolean superUser, Boolean activo)
         /*
@@ -599,7 +761,7 @@ public class TesterMensajeria {
     }
 
     public static void recordatoriosTest() {
-  /*
+        /*
         CorreoFunc funtion = new CorreoFunc();
         RecordatorioFunc recFuntion = new RecordatorioFunc();
         funtion.setEm(em);
@@ -615,12 +777,12 @@ public class TesterMensajeria {
         c.setCuerpo(" Esta es una prueba con recordatorios ");
         c.setFechaEnvio(cal.getTime());
         c.setTipo("HTML");
-*/
-        /* Crear y enviar Correo 	*/
+         */
+ /* Crear y enviar Correo 	*/
 //        funtion.crearRecxMes(c, 2);
         //Devuelve correos con recordatorios
-      //  funtion.crearRecxVez(c, 4, 3);
-      //  funtion.getCorreoswRecordatorios();
+        //  funtion.crearRecxVez(c, 4, 3);
+        //  funtion.getCorreoswRecordatorios();
 
         // Editar Correo por ID
         //funtion.editarCorreo(1, "Correo Edit", "Correo Edit", true, cal.getTime(),"HTML");
@@ -634,7 +796,7 @@ public class TesterMensajeria {
          recFuntion.deleteRecordatorio(1);
          */
     }
-/*
+    /*
     public static void startEntityManagerFactory() {
         if (entityManagerFactory == null) {
             try {
@@ -660,5 +822,5 @@ public class TesterMensajeria {
             entityManagerFactory = null;
         }
     }
-*/
+     */
 }
