@@ -21,6 +21,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -60,9 +61,21 @@ public class Orden implements Serializable {
     @ManyToOne(optional = false)
     private Cliente cliente;
 
+    @OneToOne(mappedBy="orden")
+    private Correo correo;
+    
     public Orden() {
     }
 
+    public Correo getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(Correo correo) {
+        this.correo = correo;
+    }
+
+    
     public Orden(Integer idOrden) {
         this.idOrden = idOrden;
     }

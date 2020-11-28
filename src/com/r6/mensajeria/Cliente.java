@@ -58,6 +58,8 @@ public class Cliente implements Serializable {
     private Set<Orden> ordenSet;
     @OneToOne(mappedBy="cliente")
     private Individuo individuo;
+    @OneToOne(mappedBy="cliente")
+    private Contacto contacto;
 
     public Cliente() {
     }
@@ -77,6 +79,16 @@ public class Cliente implements Serializable {
     public String getNombre() {
         return nombre;
     }
+
+    public Contacto getContacto() {
+        return contacto;
+    }
+
+    public void setContacto(Contacto contacto) {
+        this.contacto = contacto;
+    }
+    
+    
 
     public void setNombre(String nombre) {
         this.nombre = nombre;

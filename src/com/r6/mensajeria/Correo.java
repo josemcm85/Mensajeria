@@ -99,6 +99,10 @@ public class Correo implements Serializable {
 
     @OneToMany(mappedBy = "correo", cascade = CascadeType.ALL)
     private Set<Recordatorio> recordatorios;
+    
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "idOrden")
+    private Orden orden;
 
     private String asunto;
 
@@ -118,6 +122,8 @@ public class Correo implements Serializable {
     private int frecuencia;
 
     private Boolean inifinito;
+    
+    private int tipoCorreo;
 
     public Correo() {
     }
@@ -128,6 +134,25 @@ public class Correo implements Serializable {
     public Set<Contacto> getDestinatarios() {
         return destinatarios;
     }
+
+    public int getTipoCorreo() {
+        return tipoCorreo;
+    }
+
+    public Orden getOrden() {
+        return orden;
+    }
+
+    public void setOrden(Orden orden) {
+        this.orden = orden;
+    }
+    
+    
+
+    public void setTipoCorreo(int tipoCorreo) {
+        this.tipoCorreo = tipoCorreo;
+    }
+    
 
     public int getIntervalo() {
         return intervalo;

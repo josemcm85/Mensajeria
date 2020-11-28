@@ -44,6 +44,10 @@ public class Contacto implements Serializable {
     @ManyToMany(mappedBy = "destinatarios")
     private Set<Correo> correos;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "cliente")
+    private Cliente cliente;
+
     private String correo;
 
     private String nombre;
@@ -61,6 +65,14 @@ public class Contacto implements Serializable {
     //<editor-fold defaultstate="collapsed" desc="Getters y Setters-">
         public Set<Correo> getCorreos() {
         return correos;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
     public void setCorreos(Set<Correo> correos) {
