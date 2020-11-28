@@ -53,7 +53,7 @@ public class TesterMensajeria {
 
             Servicio.setServerURL("jdbc:mysql://localhost:3306/mensajeria?serverTimezone=UTC");
             Servicio.setUsername("root");
-            Servicio.setPassword("wvjjk611");
+            Servicio.setPassword("AsdF2013");
             Servicio.setHbm2DDLprotocol("update");
             Servicio.setDriver("com.mysql.jdbc.Driver");
             Servicio.setDialect("org.hibernate.dialect.MySQLDialect");
@@ -78,8 +78,8 @@ public class TesterMensajeria {
             AdjuntoDao adDao = new AdjuntoDao();
             adDao.setEm(Servicio.getEm());
 
-            String directorioAdjunto = "C:/Users/Lenovo/Desktop/s2.pdf";
-            String directorioAdjunto2 = "C:/Users/Lenovo/Desktop/prueba.docx";
+            String directorioAdjunto = "C:/Users/Daniel/Desktop/MensajeriaInit/init1.txt";
+            String directorioAdjunto2 = "C:/Users/Daniel/Desktop/MensajeriaInit/init2.txt";
             File file = new File(directorioAdjunto);
             File file2 = new File(directorioAdjunto2);
 
