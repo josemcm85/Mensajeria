@@ -66,6 +66,27 @@ public class Itemorden implements Serializable {
     public Itemorden() {
     }
 
+    public Itemorden(Integer numLinea, Integer cantidad, Double impuesto, Double precioUnitario, Double totalItem, Producto producto) {
+        this.numLinea = numLinea;
+        this.cantidad = cantidad;
+        this.impuesto = impuesto;
+        this.precioUnitario = precioUnitario;
+        this.totalItem = totalItem;
+        this.producto = producto;
+    }
+
+    public Itemorden(Integer idItem, Integer numLinea, Integer cantidad, Double impuesto, Double precioUnitario, Double totalItem, Orden orden, Producto producto) {
+        this.idItem = idItem;
+        this.numLinea = numLinea;
+        this.cantidad = cantidad;
+        this.impuesto = impuesto;
+        this.precioUnitario = precioUnitario;
+        this.totalItem = totalItem;
+        this.orden = orden;
+        this.producto = producto;
+    }
+ 
+    
     public Itemorden(Integer idItem) {
         this.idItem = idItem;
     }

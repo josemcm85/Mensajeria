@@ -44,6 +44,10 @@ public class ContactoDao implements Dao<Contacto> {
                 .setParameter("idUserParam", usuario.getIdUsuario()).getResultList();
         return all;
     }
+    
+    public List<Contacto> getByClientId(int clientId){
+        return em.createNamedQuery("Contacto.findbyCliente",Contacto.class).setParameter("idClienteParam",clientId).getResultList();
+    }
 
     public Integer maxId() {
         Integer c =  em.createNamedQuery("Contacto.maxId", Integer.class).getSingleResult();
