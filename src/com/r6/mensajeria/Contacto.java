@@ -27,7 +27,10 @@ import org.hibernate.annotations.GenericGenerator;
     )
     ,
         @NamedQuery(name = "Contacto.maxId",
-            query = "Select COALESCE(Max(t.id),0) from Contacto t ")
+            query = "Select COALESCE(Max(t.id),0) from Contacto t "),
+        
+        @NamedQuery(name ="Contacto.findbyCliente",
+                query = "Select  t from Contacto t where t.cliente.idCliente = :idClienteParam")
 })
 public class Contacto implements Serializable {
 
