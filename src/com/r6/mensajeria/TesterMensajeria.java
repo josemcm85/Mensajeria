@@ -62,7 +62,7 @@ public class TesterMensajeria {
 
             Servicio.setServerURL("jdbc:mysql://localhost:3306/mensajeria?serverTimezone=UTC");
             Servicio.setUsername("root");
-            Servicio.setPassword("AsdF2013");
+            Servicio.setPassword("wvjjk611");
             Servicio.setHbm2DDLprotocol("create");
             Servicio.setDriver("com.mysql.jdbc.Driver");
             Servicio.setDialect("org.hibernate.dialect.MySQLDialect");
