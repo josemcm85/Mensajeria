@@ -6,7 +6,6 @@
 package com.r6.service;
 
 import com.r6.mensajeria.Adjunto;
-import com.r6.mensajeria.Bitacora;
 import com.r6.mensajeria.Sistema;
 
 import java.util.List;
@@ -42,12 +41,8 @@ public class AdjuntoDao implements Dao<Adjunto> {
     }
 
     public List<Adjunto> getByMail(com.r6.mensajeria.Correo c) {
-        List<Adjunto> returned = em.createNamedQuery("Adjunto.findByMail", Adjunto.class).setParameter("idMailParam", c.getId()).getResultList();
+        List<Adjunto>  returned = em.createNamedQuery("Adjunto.findByMail",Adjunto.class).setParameter("idMailParam",c.getId()).getResultList();
         return returned;
-    }
-
-    public List<Adjunto> getByBit(Bitacora paramBitacora) {
-        return em.createNamedQuery("Adjunto.findByBit", Adjunto.class).setParameter("idBitParam", paramBitacora.getId()).getResultList();
     }
 
     @Override

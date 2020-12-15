@@ -20,42 +20,42 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
-@Entity
-@Table(name = "Tbladjunto")
-@NamedQueries(value = {
-    @NamedQuery(
-            name = "Adjunto.find",
-            query = "SELECT a FROM Adjunto a WHERE a.id = :idParam")
-    ,
-		@NamedQuery(
-            name = "Adjunto.findAll",
-            query = "SELECT a FROM Adjunto a ORDER BY a.id")
-    ,
-                @NamedQuery(
-            name = "Adjunto.findByMail",
-            query = "SELECT A from Adjunto a INNER JOIN A.correos AS AC WHERE AC.id = :idMailParam"
-    )
-    ,
-                @NamedQuery(name = "Adjunto.findByBit", query = "Select A from Adjunto A INNER JOIN A.bitacora as AB where AB.id = :idBitParam")
 
+@Entity
+@Table(name ="Tbladjunto")
+@NamedQueries(value = {
+		@NamedQuery(
+			name="Adjunto.find",
+			query="SELECT a FROM Adjunto a WHERE a.id = :idParam"),
+		@NamedQuery(
+			name="Adjunto.findAll",
+			query="SELECT a FROM Adjunto a ORDER BY a.id"),
+                @NamedQuery(
+                        name = "Adjunto.findByMail",
+                        query = "SELECT A from Adjunto a INNER JOIN A.correos AS AC WHERE AC.id = :idMailParam"
+                )
+	
 })
 public class Adjunto implements Serializable {
+    
+   @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
+   @GenericGenerator(name = "native",strategy = "native")
+   @Column(name = "Id_adjunto")
+   private Integer id;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @GenericGenerator(name = "native", strategy = "native")
-    @Column(name = "Id_adjunto")
-    private Integer id;
+   @ManyToMany(mappedBy="adjuntos")
+   private Set<Correo> correos;
+   
+   @ManyToMany(mappedBy = "adjuntosBitacora")
+   private Set<Bitacora> bitacora;
+   
+   
+   @Type(type="org.hibernate.type.MaterializedBlobType")
+   private byte[] archivo;
+   
 
-    @ManyToMany(mappedBy = "adjuntos")
-    private Set<Correo> correos;
-
-    @ManyToMany(mappedBy = "adjuntosBitacora")
-    private Set<Bitacora> bitacora;
-
-    @Type(type = "org.hibernate.type.MaterializedBlobType")
-    private byte[] archivo;
-
+   
     public Integer getId() {
         return id;
     }
@@ -76,6 +76,10 @@ public class Adjunto implements Serializable {
         this.archivo = archivo;
     }
 
+
+
+    
+    
     public void setCorreos(Set<Correo> correos) {
         this.correos = correos;
     }
@@ -87,5 +91,9 @@ public class Adjunto implements Serializable {
     public void setBitacora(Set<Bitacora> bitacora) {
         this.bitacora = bitacora;
     }
-
+    
+   
+    
+   
+   
 }

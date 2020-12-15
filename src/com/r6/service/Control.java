@@ -116,7 +116,7 @@ public class Control {
 
         for (Usuario u : deLista) {
 
-            de = u.getCorreo() + "-" + u.getIdUsuario() + ";" + u.getSistema().getIdSistema(); 
+            de = u.getCorreo();
 
         }
 
@@ -227,7 +227,7 @@ public class Control {
 
         for (Usuario u : deLista) {
 
-            de = u.getCorreo() + "-" + u.getIdUsuario() + ";" + u.getSistema().getIdSistema(); 
+            de = u.getCorreo();
 
         }
 

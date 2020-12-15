@@ -20,6 +20,8 @@ import javax.persistence.EntityManager;
 public class BitacoraDao implements Dao<Bitacora> {
 
     private static EntityManager em = null;
+    
+    
 
     @Override
     public Optional<Bitacora> get(Integer id) {
@@ -47,17 +49,13 @@ public class BitacoraDao implements Dao<Bitacora> {
                 .setParameter("idParam", t.getId()).getResultList();
         return ret;
     }
-
-    public List<Bitacora> getByDateRange(Date fIni, Date fFin) {
-        List<Bitacora> ret = em.createNamedQuery("Bitacora.findByDateRange", Bitacora.class)
-                .setParameter("fIniParam", fIni)
-                .setParameter("fFinParam", fFin)
+    
+    public List<Bitacora> getByDateRange(Date fIni, Date fFin){
+        List<Bitacora> ret = em.createNamedQuery("Bitacora.findByDateRange",Bitacora.class)
+                .setParameter("fIniParam",fIni )
+                .setParameter("fFinParam",  fFin)
                 .getResultList();
-        return ret;
-    }
-
-    public List<Bitacora> getByUserAndSys(String paramString1, String paramString2) {
-        return em.createNamedQuery("Bitacora.findByUserAndSys", Bitacora.class).setParameter("idUserParam", paramString1).setParameter("idSysParam", paramString2).getResultList();
+        return  ret;
     }
 
     @Override
@@ -85,5 +83,6 @@ public class BitacoraDao implements Dao<Bitacora> {
     public static void setEm(EntityManager em) {
         BitacoraDao.em = em;
     }
-
+    
+    
 }
