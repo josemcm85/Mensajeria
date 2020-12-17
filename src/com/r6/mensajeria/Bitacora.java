@@ -27,12 +27,14 @@ import org.hibernate.annotations.GenericGenerator;
     ,
         @NamedQuery(name = "Bitacora.findByUser", query = "Select t from Bitacora t where t.de LIKE :emailParam order by T.fechaEnvio ASC")
     ,
-        @NamedQuery(name = "Bitacora.findByFile", 
-                query = "Select bit from Bitacora bit INNER JOIN BIT.adjuntosBitacora AS adb  where adb.id = :idParam")
+        @NamedQuery(name = "Bitacora.findByFile",
+            query = "Select bit from Bitacora bit INNER JOIN BIT.adjuntosBitacora AS adb  where adb.id = :idParam")
     ,
         @NamedQuery(name = "Bitacora.findByDateRange", query = "Select t from Bitacora t where t.fechaEnvio BETWEEN :fIniParam AND :fFinParam order by T.fechaEnvio ASC")
+    ,
+        @NamedQuery(name = "Bitacora.findByUserAndSys", query = "Select b  from Bitacora b WHERE SUBSTRING(b.de,LOCATE('-',b.de)+1,1) = :idUserParam AND SUBSTRING(b.de,LOCATE(';',b.de)+1,1) = :idSysParam")
 })
-public class Bitacora  {
+public class Bitacora {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -107,8 +109,7 @@ public class Bitacora  {
     public void setInfinito(Boolean infinito) {
         this.infinito = infinito;
     }
-    
-    
+
     public void setDe(String de) {
         this.de = de;
     }
