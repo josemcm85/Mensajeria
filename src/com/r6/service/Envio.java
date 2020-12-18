@@ -3,6 +3,8 @@ package com.r6.service;
 import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
+
+import javax.activation.DataHandler;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
@@ -12,7 +14,9 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.mail.util.ByteArrayDataSource;
 import javax.swing.SwingWorker;
+import com.r6.mensajeria.Adjunto;
 
 public class Envio extends SwingWorker<Void, Integer> {
 
@@ -37,10 +41,25 @@ public class Envio extends SwingWorker<Void, Integer> {
         message.setFrom(new InternetAddress((String) properties.get("mail.smtp.mail.sender")));
         System.out.println(correo.getEmailReceiver());
 
-        message.addRecipient(Message.RecipientType.TO, new InternetAddress(correo.getEmailReceiver()));
+        if (correo.getEmailReceiver().indexOf(',') > 0) {
+        
+        	message.addRecipients(Message.RecipientType.TO, InternetAddress.parse(correo.getEmailReceiver()));   	
+        } else {
+        	message.addRecipient(Message.RecipientType.TO, new InternetAddress(correo.getEmailReceiver()));
+        }
+            
+        
+       
         message.setSubject(correo.getSubject());
         if (!"".equals(correo.getCopiados())) {
-            message.addRecipient(Message.RecipientType.BCC, new InternetAddress(correo.getCopiados()));
+        
+            if (correo.getCopiados().indexOf(',') > 0) {
+            	message.addRecipients(Message.RecipientType.BCC, InternetAddress.parse(correo.getCopiados()));   	
+            } else {
+            	message.addRecipient(Message.RecipientType.BCC, new InternetAddress(correo.getCopiados()));
+            }
+                
+            
         }
 
         // creates multipart
@@ -52,16 +71,26 @@ public class Envio extends SwingWorker<Void, Integer> {
         // adds attachment
         //size limit 50 mb - gmail
         if (correo.getAttachedFiles() != null && correo.getAttachedFiles().size() > 0) {
-            for (File filePath : correo.getAttachedFiles()) {
-                MimeBodyPart attachPart = new MimeBodyPart();
-                try {
-                    attachPart.attachFile(filePath);
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
+        	for(Adjunto a:correo.getAttachedFiles()) {
+        		MimeBodyPart attachPart = new MimeBodyPart();
+        		  try {
+        			  String mimeType=a.getMIMETypeFromByteArray();
+        			  ByteArrayDataSource baDS=new ByteArrayDataSource(a.getArchivo(),mimeType);
+        		       
+        	
+        		      attachPart.setDataHandler(new DataHandler(baDS));
+        		      attachPart.setFileName(a.getId()+"."+mimeType.split("/")[1]);
+        		     
+         
+                  } catch (Exception ex) {
+                      ex.printStackTrace();
+                  }
 
-                emailContent.addBodyPart(attachPart);
-            }
+                  emailContent.addBodyPart(attachPart);
+        		
+        	}
+        	
+        
         }
         message.setContent(emailContent, correo.getTipo());
 
@@ -103,16 +132,26 @@ public class Envio extends SwingWorker<Void, Integer> {
             // adds attachment
             //size limit 50 mb - gmail
             if (correo.getAttachedFiles() != null && correo.getAttachedFiles().size() > 0) {
-                for (File filePath : correo.getAttachedFiles()) {
-                    MimeBodyPart attachPart = new MimeBodyPart();
-                    try {
-                        attachPart.attachFile(filePath);
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
+            	for(Adjunto a:correo.getAttachedFiles()) {
+            		MimeBodyPart attachPart = new MimeBodyPart();
+            		  try {
+            			  String mimeType=a.getMIMETypeFromByteArray();
+            			  ByteArrayDataSource baDS=new ByteArrayDataSource(a.getArchivo(),mimeType);
+            		       
+            	
+            		      attachPart.setDataHandler(new DataHandler(baDS));
+            		      attachPart.setFileName(a.getId()+"."+mimeType.split("/")[1]);
+            		     
+             
+                      } catch (Exception ex) {
+                          ex.printStackTrace();
+                      }
 
-                    emailContent.addBodyPart(attachPart);
-                }
+                      emailContent.addBodyPart(attachPart);
+            		
+            	}
+            	
+            
             }
             message.setContent(emailContent);
 

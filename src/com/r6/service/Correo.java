@@ -2,6 +2,9 @@ package com.r6.service;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Set;
+
+import com.r6.mensajeria.Adjunto;
 
 public class Correo {
 	private String emailSender;
@@ -12,9 +15,9 @@ public class Correo {
     private String tipo;
     private String Copiados;
 
-    private ArrayList<File> attachedFiles;
+    private Set<Adjunto> attachedFiles;
 
-    public Correo(String emailSender, String password, String emailReceiver, String subject, String body, ArrayList<File> attachedFiles, String tipo, String Copiados) {
+    public Correo(String emailSender, String password, String emailReceiver, String subject, String body, Set<Adjunto> attachedFiles, String tipo, String Copiados) {
         this.emailSender = emailSender;
         this.password = password;
         this.emailReceiver = emailReceiver;
@@ -24,17 +27,24 @@ public class Correo {
         this.tipo = tipo;
         this.Copiados = Copiados;
     }
-
-    public ArrayList<File> getAttachedFiles() {
-        return attachedFiles;
+    
+    public Correo() {
+   	
     }
 
-    public void setAttachedFiles(ArrayList<File> attachedFiles) {
-        this.attachedFiles = attachedFiles;
-    }
+   
     
+  
     
-    public String getEmailSender() {
+	public Set<Adjunto> getAttachedFiles() {
+		return attachedFiles;
+	}
+
+	public void setAttachedFiles(Set<Adjunto> attachedFiles) {
+		this.attachedFiles = attachedFiles;
+	}
+
+	public String getEmailSender() {
         return emailSender;
     }
 

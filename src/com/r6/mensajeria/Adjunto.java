@@ -5,8 +5,13 @@
  */
 package com.r6.mensajeria;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.util.Enumeration;
+import java.util.Properties;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,6 +24,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
+
+import com.r6.service.Servicio;
 
 @Entity
 @Table(name = "Tbladjunto")
@@ -88,4 +95,45 @@ public class Adjunto implements Serializable {
         this.bitacora = bitacora;
     }
 
+    
+    
+    
+    public String getMIMETypeFromByteArray() {
+        byte[] topOfStream = new byte[32];
+        System.arraycopy(this.archivo, 0, topOfStream, 0, topOfStream.length);
+        return guessMimeType(topOfStream);
+    }
+    
+    
+    public String guessMimeType(byte[] topOfStream) {
+
+        String mimeType = null;
+        Properties magicmimes = new Properties();
+        FileInputStream in = null;
+
+        try {
+            in = new FileInputStream(Servicio.getUbicacionMimes());
+            magicmimes.load(in);
+            in.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        for (Enumeration keys = magicmimes.keys(); keys.hasMoreElements();) {
+            String key = (String) keys.nextElement();
+            byte[] sample = new byte[key.length()];
+            System.arraycopy(topOfStream, 0, sample, 0, sample.length);
+            if (key.equals(new String(sample))) {
+                mimeType = magicmimes.getProperty(key);
+                System.out.println("Mime Found! " + mimeType);
+                break;
+            } else {
+                System.out.println("trying " + key + " == " + new String(sample));
+            }
+        }
+
+        return mimeType;
+    }
 }

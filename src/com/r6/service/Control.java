@@ -6,6 +6,9 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.nio.ByteBuffer;
+import java.nio.file.Files;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -206,6 +209,74 @@ public class Control {
 
     }
 
+    public void enviarBitacoraCorreoNBorra(com.r6.mensajeria.Correo correo) {
+    	  String copiados = "";
+          String de = "";
+          String para = "";
+
+          BitacoraDao dao = new BitacoraDao();
+          dao.setEm(em);
+
+          AdjuntoDao adDao = new AdjuntoDao();
+          adDao.setEm(em);
+
+          CorreoDao cDao = new CorreoDao();
+          cDao.setEm(em);
+
+          Bitacora bit = new Bitacora();
+
+          Set<Usuario> deLista = new HashSet<>();
+          deLista = correo.getUsuarios();
+
+          for (Usuario u : deLista) {
+
+              de = u.getCorreo() + "-" + u.getIdUsuario() + ";" + u.getSistema().getIdSistema(); 
+
+          }
+
+          Set<Contacto> paraLista = new HashSet<>();
+          paraLista = correo.getRemitentes();
+
+          for (Contacto c : paraLista) {
+
+              para = c.getCorreo() + ";" + para;
+
+          }
+
+          Set<Usuario> deCopiados = new HashSet<>();
+         
+          if(correo.getUsuarioscopiados()!=null) {
+        	  deCopiados = correo.getUsuarioscopiados();	
+        	  for (Usuario u : deCopiados) {
+
+                  copiados = u.getCorreo() + ";" + copiados;
+
+              }
+          }
+        
+
+          bit.setAsunto(correo.getAsunto());
+          bit.setCopiados(copiados);
+          bit.setCuerpo(correo.getCuerpo());
+          bit.setDe(de);
+          bit.setEnviado(true);
+          bit.setFechaEnvio(correo.getFechaEnvio());
+          bit.setPara(para);
+          bit.setTipo(correo.getTipo());
+          bit.setInfinito(correo.getInifinito());
+          if(correo.getAdjuntos()!=null) {
+        	
+        	  Set<Adjunto> cc = correo.getAdjuntos();
+
+              if (!cc.isEmpty()) {
+                  bit.setAdjuntosBitacora(cc);
+              }
+
+          }
+         
+          dao.save(bit);
+    }
+    
     public void enviarBitacoraRecordatorio(Recordatorio recordatorio) {
 
         String copiados = "";
@@ -265,85 +336,91 @@ public class Control {
     }
 
     public void enviarCorreo(com.r6.mensajeria.Correo correo) throws ClassNotFoundException, MessagingException {
-
+    	
+    	System.out.println("dsdsd");
         String de = "";
         String password = "";
         String Destinatario = "";
         String copiados = "";
-
+        Correo correoEnviar= new Correo();
         Set<Usuario> deLista = new HashSet<>();
-        deLista = correo.getUsuarios();
+        
+        
+        if(correo.getUsuarios()!=null) {
+        	deLista = correo.getUsuarios();
+        	 for (Usuario u : deLista) {
 
-        for (Usuario u : deLista) {
+                 de = u.getCorreo();
+                 password = u.getContrasenia();
 
-            de = u.getCorreo();
-            password = u.getContrasenia();
-
+             }
+        	 
+        	 correoEnviar.setEmailSender(de);
+        	 correoEnviar.setPassword(password);
         }
+       
 
         Set<Usuario> CopiadosLista = new HashSet<>();
-        CopiadosLista = correo.getUsuarioscopiados();
-
+     
         int cop = 1;
-        for (Usuario u : CopiadosLista) {
-            if (cop == 1) {
-                copiados = u.getCorreo();
-            } else {
-                copiados = copiados + ";" + u.getCorreo();
-            }
-
+        if(correo.getUsuarioscopiados()!=null) {
+        	   CopiadosLista = correo.getUsuarioscopiados();
+        	   for (Usuario u : CopiadosLista) {
+                   if (cop == 1) {
+                       copiados = u.getCorreo();
+                   } else {
+                       copiados = copiados + "," + u.getCorreo();
+                   }
+                   cop++;
+               }
+        	 
         }
+        correoEnviar.setCopiados(copiados);
 
         Set<Contacto> paraLista = new HashSet<>();
-        paraLista = correo.getDestinatarios();
+       
 
-        int i = 1;
-        for (Contacto c : paraLista) {
+       
+        if(correo.getDestinatarios()!=null) {
+        	 int i = 1;
+        	 paraLista = correo.getDestinatarios();
+        	
+        	   for (Contacto c : paraLista) {
 
-            if (i == 1) {
-                Destinatario = c.getCorreo();
-            } else {
-                Destinatario = Destinatario + ";" + c.getCorreo();
-            }
+                   if (i == 1) {
+                       Destinatario = c.getCorreo();
+                   } else {
+                       Destinatario = Destinatario + "," + c.getCorreo();
+                   }
 
-            i++;
+                   i++;
+               }
+        	   
+        	
         }
-
+     
+        correoEnviar.setEmailReceiver(Destinatario);
         String asunto = correo.getAsunto();
+        correoEnviar.setSubject(asunto);
         String cuerpo = correo.getCuerpo();
+        correoEnviar.setBody(cuerpo);
         String tipo = correo.getTipo();
+        correoEnviar.setTipo(tipo);
 
         Envio enviar = new Envio();
 
-        ArrayList<File> files = new ArrayList<>();
+        Set<Adjunto> files = new HashSet<Adjunto>();
 
-        for (Adjunto a : correo.getAdjuntos()) {
-
-            byte[] b = a.getArchivo();
-
-            try {
-                ByteArrayInputStream bis = new ByteArrayInputStream(b);
-                ObjectInputStream ois;
-                ois = new ObjectInputStream(bis);
-                File file = (File) ois.readObject();
-                files.add(file);
-
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-
+        if(correo.getAdjuntos()!=null) {
+        	
+        files=correo.getAdjuntos();
         }
+        
+   	 correoEnviar.setAttachedFiles(files);
+       
 
-        Correo correoEnviar = new Correo(
-                de,
-                password,
-                Destinatario,
-                asunto,
-                cuerpo,
-                files,
-                tipo,
-                copiados);
+ 
+     
         enviar.setCorreo(correoEnviar);
 
         enviar.enviarSincronico();
@@ -402,9 +479,9 @@ public class Control {
         String tipo = correo.getTipo();
 
         Envio enviar = new Envio();
-        ArrayList<File> files = new ArrayList<>();
-        File file = new File("path");
-        files.add(file);
+        Set<Adjunto> files = new HashSet<>();
+      //  File file = new File("path");
+       // files.add(file);
 
         Correo correoEnviar = new Correo(
                 de,

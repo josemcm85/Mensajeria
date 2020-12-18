@@ -75,5 +75,7 @@ public class AdjuntoDao implements Dao<Adjunto> {
     public static void setEm(EntityManager em) {
         AdjuntoDao.em = em;
     }
+    
+  
 
 }

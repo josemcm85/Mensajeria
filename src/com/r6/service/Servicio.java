@@ -27,7 +27,7 @@ public class Servicio implements Serializable {
     private static String driver;
     private static String hbm2DDLprotocol;
     private static String dialect;
-
+    private static String ubicacionMimes;
     public static void startEntityManagerFactory() {
 
         if (entityManagerFactory == null) {
@@ -136,5 +136,13 @@ public class Servicio implements Serializable {
     public static void setDialect(String dialect) {
         Servicio.dialect = dialect;
     }
+
+	public static String getUbicacionMimes() {
+		return ubicacionMimes;
+	}
+
+	public static void setUbicacionMimes(String ubicacionMimes) {
+		Servicio.ubicacionMimes = ubicacionMimes;
+	}
 
 }
