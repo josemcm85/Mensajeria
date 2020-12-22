@@ -151,8 +151,17 @@ public class Control {
         bit.setTipo(correo.getTipo());
         bit.setInfinito(correo.getInifinito());
 
-        Set<Adjunto> cc = correo.getAdjuntos();
-
+        Set<Adjunto> cc=new HashSet<Adjunto>();
+        if(correo.getAdjuntos()!=null) {
+        	
+        	 for(Adjunto a:correo.getAdjuntos()) {
+             	cc.add(a);
+             }
+        	
+        }
+       
+        
+  
         if (!cc.isEmpty()) {
             bit.setAdjuntosBitacora(cc);
         }
@@ -264,14 +273,22 @@ public class Control {
           bit.setPara(para);
           bit.setTipo(correo.getTipo());
           bit.setInfinito(correo.getInifinito());
+          
+          
+          
+          Set<Adjunto> cc=new HashSet<Adjunto>();
           if(correo.getAdjuntos()!=null) {
-        	
-        	  Set<Adjunto> cc = correo.getAdjuntos();
-
-              if (!cc.isEmpty()) {
-                  bit.setAdjuntosBitacora(cc);
-              }
-
+          	
+          	 for(Adjunto a:correo.getAdjuntos()) {
+               	cc.add(a);
+               }
+          	
+          }
+         
+          
+    
+          if (!cc.isEmpty()) {
+              bit.setAdjuntosBitacora(cc);
           }
          
           dao.save(bit);
@@ -400,6 +417,7 @@ public class Control {
         }
      
         correoEnviar.setEmailReceiver(Destinatario);
+        System.out.println("Desde control:"+correoEnviar.getEmailReceiver());
         String asunto = correo.getAsunto();
         correoEnviar.setSubject(asunto);
         String cuerpo = correo.getCuerpo();

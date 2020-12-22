@@ -41,13 +41,26 @@ public class Envio extends SwingWorker<Void, Integer> {
         message.setFrom(new InternetAddress((String) properties.get("mail.smtp.mail.sender")));
         System.out.println(correo.getEmailReceiver());
 
+        String [] recipientArray=correo.getEmailReceiver().split(",");
+        try {
+        	  for(int i=0;i<recipientArray.length;i++) {
+              	message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipientArray[i]));
+              }
+        }catch(Exception e) {
+        	
+        }
+      
+        /*
         if (correo.getEmailReceiver().indexOf(',') > 0) {
         
+       
+        	
+        	
         	message.addRecipients(Message.RecipientType.TO, InternetAddress.parse(correo.getEmailReceiver()));   	
         } else {
         	message.addRecipient(Message.RecipientType.TO, new InternetAddress(correo.getEmailReceiver()));
         }
-            
+            */
         
        
         message.setSubject(correo.getSubject());
